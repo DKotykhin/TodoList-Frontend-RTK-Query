@@ -8,6 +8,7 @@ import UserMessage from "components/userMessage/UserMessage";
 import { useFetchDeleteUserMutation } from "services/userServices";
 import { fetchUser } from "services/userServices";
 import { useAppDispatch } from "store/hook";
+import { logout } from "store/userSlice";
 
 const DeleteForm: React.FC = () => {
 
@@ -24,6 +25,7 @@ const DeleteForm: React.FC = () => {
             .then(response => {
                 console.log(response.message);
                 dispatch(fetchUser.util.resetApiState());
+                dispatch(logout());
                 sessionStorage.removeItem("rememberMe");
                 localStorage.removeItem("rememberMe");
                 navigate("/login");

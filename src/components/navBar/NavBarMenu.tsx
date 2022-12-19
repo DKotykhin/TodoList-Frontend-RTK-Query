@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 
 import Typography from "@mui/material/Typography";
 
-// import { removeUser } from "store/userSlice";
 import { fetchUser } from "services/userServices";
 import { useAppDispatch } from "store/hook";
 import { logout } from "store/userSlice";
@@ -23,7 +22,7 @@ const NavBarMenu = () => {
                 break;
             case "Logout":
                 dispatch(fetchUser.util.resetApiState());
-                dispatch(logout())
+                dispatch(logout());
                 sessionStorage.removeItem("rememberMe");
                 localStorage.removeItem("rememberMe");
                 navigate("/login");
