@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { getToken } from "./getToken";
-import { setUserAvatar } from "store/userSlice";
+import { setUserAvatar, updateAvatar } from "store/userSlice";
 import {
     IUserAvatar,
     IUserLogin,
@@ -107,6 +107,12 @@ export const fetchUser = createApi({
                 },
                 body: data,
             }),
+            async onQueryStarted(args, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    dispatch(updateAvatar(data));
+                } catch (error) {}
+            },
             invalidatesTags: ["User"],
         }),
         fetchDeleteAvatar: builder.mutation<IUserAvatar, void>({
@@ -117,6 +123,12 @@ export const fetchUser = createApi({
                     Authorization: `Bearer ${getToken()}`,
                 },
             }),
+            async onQueryStarted(args, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    dispatch(updateAvatar(data));
+                } catch (error) {}
+            },
             invalidatesTags: ["User"],
         }),
     }),

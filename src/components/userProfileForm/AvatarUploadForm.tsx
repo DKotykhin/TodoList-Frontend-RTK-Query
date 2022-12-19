@@ -18,14 +18,17 @@ const Base_URL = process.env.REACT_APP_BACKEND_URL;
 
 const AvatarUploadForm: React.FC<{ user?: IUser }> = ({ user }) => {
 
+    const [loadSuccess, setLoadSuccess] = useState('');
     const [loadError, setLoadError] = useState('');
     const [fileName, setFileName] = useState('');
     const { register, reset, handleSubmit } = useForm();
 
-    const [loadAvatar, { data, isLoading }] = useFetchUploadAvatarMutation();
+    const [loadAvatar, { isLoading }] = useFetchUploadAvatarMutation();
     const userAvatarURL = user?.avatarURL ? Base_URL + user.avatarURL : "/";
 
     const onChange = (e: any) => {
+        setLoadError('');
+        setLoadSuccess('');
         setFileName(e.target.files[0].name);
         const isApproved = checkFileType(e.target.files[0].type);
         if (!isApproved) setLoadError("Incorrect file type");
@@ -50,6 +53,7 @@ const AvatarUploadForm: React.FC<{ user?: IUser }> = ({ user }) => {
                 .unwrap()
                 .then(response => {
                     console.log(response.message);
+                    setLoadSuccess(response.message);
                     reset();
                     setFileName("");
                 })
@@ -98,7 +102,7 @@ const AvatarUploadForm: React.FC<{ user?: IUser }> = ({ user }) => {
                     </IconButton>
                 </>
             ) : <AvatarDeleteForm user={user} />}
-            <UserMessage loading={isLoading} loaded={data?.message} error={loadError} />
+            <UserMessage loading={isLoading} loaded={loadSuccess} error={loadError} />
         </Box>
     )
 }

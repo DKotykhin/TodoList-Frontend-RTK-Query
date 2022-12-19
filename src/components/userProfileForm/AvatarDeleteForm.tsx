@@ -13,6 +13,7 @@ const AvatarDeleteForm: React.FC<{ user?: IUser }> = ({ user }) => {
     const responseError = (error as RequestError)?.data.message;
 
     const handleDelete = async () => {
+        setDeleteError('');
         const avatarURL: string | undefined = user?.avatarURL;
         if (avatarURL) {
             await deleteAvatar();
