@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 // import { removeUser } from "store/userSlice";
 import { fetchUser } from "services/userServices";
 import { useAppDispatch } from "store/hook";
+import { logout } from "store/userSlice";
 
 const settings = ["Profile", "Change password", "Logout"];
 
@@ -22,6 +23,7 @@ const NavBarMenu = () => {
                 break;
             case "Logout":
                 dispatch(fetchUser.util.resetApiState());
+                dispatch(logout())
                 sessionStorage.removeItem("rememberMe");
                 localStorage.removeItem("rememberMe");
                 navigate("/login");

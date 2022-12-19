@@ -24,7 +24,7 @@ To run this project, you will need to add the following environment variables to
 
 
 
-  [https://kotykhin-todolist.netlify.app](https://kotykhin-todolist.netlify.app)
+  [todo-list-new-frontend.vercel.app](todo-list-new-frontend.vercel.app)
 
 
 

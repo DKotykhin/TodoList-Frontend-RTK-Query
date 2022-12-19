@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { getToken } from "./getToken";
+import { setUserAvatar } from "store/userSlice";
 import {
     IUserAvatar,
     IUserLogin,
@@ -37,6 +38,12 @@ export const fetchUser = createApi({
                 },
                 body: JSON.stringify(data),
             }),
+            async onQueryStarted(args, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    dispatch(setUserAvatar(data));
+                } catch (error) {}
+            },
             invalidatesTags: ["User"],
         }),
         fetchLoginUser: builder.mutation<IUserResponse, IUserLogin>({
@@ -48,7 +55,13 @@ export const fetchUser = createApi({
                 },
                 body: JSON.stringify(data),
             }),
-            invalidatesTags: ["User"],                   
+            async onQueryStarted(args, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    dispatch(setUserAvatar(data));
+                } catch (error) {}
+            },
+            invalidatesTags: ["User"],
         }),
         fetchUpdateUser: builder.mutation<IUserResponse, IUserUpdate>({
             query: (data) => ({
@@ -88,9 +101,9 @@ export const fetchUser = createApi({
         fetchUploadAvatar: builder.mutation<IUserAvatar, FormData>({
             query: (data) => ({
                 method: "POST",
-                url: "/upload",                
-                headers: {                    
-                    Authorization: `Bearer ${getToken()}`,                                        
+                url: "/upload",
+                headers: {
+                    Authorization: `Bearer ${getToken()}`,
                 },
                 body: data,
             }),
@@ -117,5 +130,5 @@ export const {
     useFetchDeleteUserMutation,
     useFetchRegisterUserMutation,
     useFetchUploadAvatarMutation,
-    useFetchUserConfirmPasswordMutation
+    useFetchUserConfirmPasswordMutation,
 } = fetchUser;

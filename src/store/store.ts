@@ -3,9 +3,11 @@ import { configureStore } from "@reduxjs/toolkit";
 import { fetchUser } from "services/userServices";
 import { fetchTask } from "services/taskServices";
 import { setupListeners } from "@reduxjs/toolkit/query";
+import user from './userSlice'
 
 const store = configureStore({
-    reducer: {               
+    reducer: {
+        user,              
         [fetchUser.reducerPath]: fetchUser.reducer,
         [fetchTask.reducerPath]: fetchTask.reducer,
     },
