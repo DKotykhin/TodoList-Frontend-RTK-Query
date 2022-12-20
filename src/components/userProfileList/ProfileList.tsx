@@ -20,7 +20,7 @@ const ProfileList: React.FC = () => {
         <Container maxWidth="xs" className="profile">
             <Paper elevation={10}>
                 <Typography className="profile title" component="h2">
-                    User Profile
+                    {data?.name}
                 </Typography>
                 <Typography sx={{ pb: 1 }}>
                     {data && `Created: ${format(

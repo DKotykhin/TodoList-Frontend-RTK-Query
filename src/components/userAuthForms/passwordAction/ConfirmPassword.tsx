@@ -5,7 +5,7 @@ import { Button } from "@mui/material";
 import { Box } from "@mui/system";
 
 import { PasswordField } from "components/userFields";
-import UserMessage from "components/userMessage/UserMessage";
+import SnackBar from "components/snackBar/SnackBar";
 import { PasswordFormValidation } from "../userFormValidation";
 import { useFetchUserConfirmPasswordMutation } from "services/userServices";
 
@@ -69,10 +69,10 @@ const ConfirmPassword: React.FC<IConfirmPassword> = ({ confirmStatus }) => {
                     className="form submit_button"
                     type="submit"
                 >
-                    Confirm password
+                    {isLoading ? 'Loading...' : "Confirm password"}
                 </Button>
             </Box>
-            <UserMessage loading={isLoading} loaded={''} error={error} />
+            <SnackBar successMessage="" errorMessage={error} />
         </>
     )
 }

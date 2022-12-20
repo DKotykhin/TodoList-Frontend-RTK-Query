@@ -5,7 +5,7 @@ import { Avatar, Box, Tooltip, IconButton } from '@mui/material';
 import CloseIcon from "@mui/icons-material/Close";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 
-import UserMessage from "components/userMessage/UserMessage";
+import SnackBar from 'components/snackBar/SnackBar';
 import AvatarDeleteForm from './AvatarDeleteForm';
 
 import { useFetchUploadAvatarMutation } from "services/userServices";
@@ -26,16 +26,13 @@ const AvatarUploadForm: React.FC<{ user?: IUser }> = ({ user }) => {
     const [loadAvatar, { isLoading }] = useFetchUploadAvatarMutation();
     const userAvatarURL = user?.avatarURL ? Base_URL + user.avatarURL : "/";
 
-    const onChange = (e: any) => {
-        setLoadError('');
-        setLoadSuccess('');
+    const onChange = (e: any) => {       
         setFileName(e.target.files[0].name);
         const isApproved = checkFileType(e.target.files[0].type);
         if (!isApproved) setLoadError("Incorrect file type");
         if (e.target.files[0].size > 1024000) setLoadError("File shoul be less then 1Mb");
     };
-    const onReset = () => {
-        setLoadError('')
+    const onReset = () => {        
         setFileName("");
         reset();
     };
@@ -87,7 +84,7 @@ const AvatarUploadForm: React.FC<{ user?: IUser }> = ({ user }) => {
                     hidden
                 />
             </Box>
-            {fileName ? (
+            {isLoading ? 'Loading...' : fileName ? (
                 <>
                     {fileName}
                     <IconButton onClick={onReset}>
@@ -101,8 +98,8 @@ const AvatarUploadForm: React.FC<{ user?: IUser }> = ({ user }) => {
                         </Tooltip>
                     </IconButton>
                 </>
-            ) : <AvatarDeleteForm user={user} />}
-            <UserMessage loading={isLoading} loaded={loadSuccess} error={loadError} />
+            ) : <AvatarDeleteForm user={user} />}            
+            <SnackBar successMessage={loadSuccess} errorMessage={loadError} />
         </Box>
     )
 }

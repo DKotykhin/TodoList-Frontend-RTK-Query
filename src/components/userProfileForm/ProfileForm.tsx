@@ -7,10 +7,10 @@ import { Box } from "@mui/system";
 import { ProfileFormValidation } from "./ProfileFormValidation";
 import AvatarUploadForm from "./AvatarUploadForm";
 import { EmailField, NameField } from "components/userFields";
-import UserMessage from "components/userMessage/UserMessage";
 
 import { useFetchUpdateUserMutation } from "services/userServices";
 import { IUser, IUserUpdate } from "types/userTypes";
+import SnackBar from "components/snackBar/SnackBar";
 
 
 const ProfileForm: React.FC<{ user?: IUser }> = ({ user }) => {
@@ -63,15 +63,14 @@ const ProfileForm: React.FC<{ user?: IUser }> = ({ user }) => {
                         control={control}
                     />
                 </Box>
-
-                <UserMessage loading={isLoading} loaded={updateData?.message} error={updateError} />
                 <Button
                     type="submit"
                     variant="outlined"
                     sx={{ m: 3 }}
                 >
-                    Save name
+                    {isLoading ? 'Loading...' : 'Save name'}
                 </Button>
+                <SnackBar successMessage={updateData?.message || ''} errorMessage={updateError} />
             </Box>
         </Paper>
     )

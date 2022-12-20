@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { Typography, Paper } from "@mui/material";
 
 import DeleteDialog from "./DeleteDialog";
-import UserMessage from "components/userMessage/UserMessage";
+import SnackBar from "components/snackBar/SnackBar";
+
 import { useFetchDeleteUserMutation } from "services/userServices";
 import { fetchUser } from "services/userServices";
 import { useAppDispatch } from "store/hook";
@@ -37,11 +38,11 @@ const DeleteForm: React.FC = () => {
     };
 
     return (
-        <Paper elevation={10} sx={{ border: '1px solid #ff0000' }}>
+        <Paper elevation={10} sx={{ border: '2px solid #ff0000' }}>
             <Typography className="profile subtitle">
-                Need to delete Profile?
+                {isLoading ? 'Deleting...' : 'Need to delete Profile?'}
             </Typography>
-            <UserMessage loading={isLoading} loaded={''} error={deleteError} />
+            <SnackBar successMessage="" errorMessage={deleteError} />
             <DeleteDialog
                 dialogTitle={"You really want to delete user?"}
                 deleteAction={handleDelete}

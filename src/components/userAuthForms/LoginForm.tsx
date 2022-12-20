@@ -5,8 +5,8 @@ import { useForm, Controller } from "react-hook-form";
 import { Button, Container, Typography, Box, Avatar, Paper } from "@mui/material";
 import { InputLabel, Checkbox } from "@mui/material";
 
-import UserMessage from "components/userMessage/UserMessage";
 import { EmailField, PasswordField } from "components/userFields";
+import SnackBar from "components/snackBar/SnackBar";
 import { LoginFormValidation } from "./userFormValidation";
 
 import { IUserLogin, RequestError } from "types/userTypes";
@@ -83,10 +83,10 @@ const LoginForm: React.FC = () => {
                         disabled={!isValid}
                         type="submit"
                     >
-                        Login
+                        {isLoading ? 'Loading...' : 'Login'}
                     </Button>
                 </Box>
-                <UserMessage loading={isLoading} loaded={''} error={loginError} />
+                <SnackBar successMessage="" errorMessage={loginError} />
             </Paper>
             <Typography className="form subtitle">
                 {"Don't have account?"}

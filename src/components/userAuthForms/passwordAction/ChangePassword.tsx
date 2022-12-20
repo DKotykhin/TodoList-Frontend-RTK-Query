@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 import { Button } from "@mui/material";
 import { Box } from "@mui/system";
 
-import UserMessage from "components/userMessage/UserMessage";
 import { PasswordField } from "components/userFields";
+import SnackBar from "components/snackBar/SnackBar";
 import { NewPasswordFormValidation } from "../userFormValidation";
 import { useFetchUpdateUserMutation } from "services/userServices";
 
@@ -76,10 +76,10 @@ const ChangePassword: React.FC = () => {
                     className="form submit_button"
                     type="submit"
                 >
-                    Change password
+                    {isLoading ? 'Loading...' : "Change password"}
                 </Button>
             </Box>
-            <UserMessage loading={isLoading} loaded={loaded} error={error} />
+            <SnackBar successMessage={loaded} errorMessage={error} />
         </>
     );
 }

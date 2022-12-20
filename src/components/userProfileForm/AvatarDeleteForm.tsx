@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import UserMessage from "components/userMessage/UserMessage";
 import DeleteDialog from "../userDeleteForm/DeleteDialog";
+import SnackBar from 'components/snackBar/SnackBar';
 
 import { useFetchDeleteAvatarMutation } from "services/userServices";
 import { IUser, RequestError } from 'types/userTypes';
@@ -9,7 +9,7 @@ import { IUser, RequestError } from 'types/userTypes';
 const AvatarDeleteForm: React.FC<{ user?: IUser }> = ({ user }) => {
 
     const [deleteError, setDeleteError] = useState('');
-    const [deleteAvatar, { data, error, isLoading }] = useFetchDeleteAvatarMutation();
+    const [deleteAvatar, { data, error }] = useFetchDeleteAvatarMutation();
     const responseError = (error as RequestError)?.data.message;
 
     const handleDelete = async () => {
@@ -29,7 +29,7 @@ const AvatarDeleteForm: React.FC<{ user?: IUser }> = ({ user }) => {
                 dialogTitle={"You really want to delete avatar?"}
                 deleteAction={handleDelete}
             />
-            <UserMessage loading={isLoading} loaded={data?.message} error={deleteError || responseError} />
+            <SnackBar successMessage={data?.message || ''} errorMessage={deleteError || responseError} />
         </>
     )
 }

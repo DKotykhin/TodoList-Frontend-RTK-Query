@@ -6,8 +6,8 @@ import { Button, Container, Typography, Avatar, Paper } from "@mui/material";
 import { Box } from "@mui/system";
 
 import { EmailField, NameField, PasswordField } from "components/userFields";
+import SnackBar from "components/snackBar/SnackBar";
 import { RegisterFormValidation } from "./userFormValidation";
-import UserMessage from "components/userMessage/UserMessage";
 import { useFetchRegisterUserMutation } from "services/userServices";
 
 import { IUserRegister } from "types/userTypes";
@@ -31,7 +31,7 @@ const RegisterForm = () => {
         await registerUser(registerData)
             .unwrap()
             .then(response => {
-                console.log(response.message);                
+                console.log(response.message);
                 sessionStorage.setItem("rememberMe", response.token);
                 navigate("/");
                 reset();
@@ -73,10 +73,10 @@ const RegisterForm = () => {
                         className="form submit_button"
                         type="submit"
                     >
-                        {"Register"}
+                        {isLoading ? 'Loading...' : "Register"}
                     </Button>
                 </Box>
-                <UserMessage loading={isLoading} loaded={''} error={error} />
+                <SnackBar successMessage="" errorMessage={error} />
             </Paper>
             <Typography className="form subtitle">
                 {"Already have account?"}
