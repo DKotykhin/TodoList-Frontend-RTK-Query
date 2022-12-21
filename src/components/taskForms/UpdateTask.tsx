@@ -29,7 +29,7 @@ const UpdateTaskComponent: React.FC = () => {
     const [mdeValue, setMdeValue] = useState("");;
     const navigate = useNavigate();
 
-    const { data } = useFetchAllTasksQuery();
+    const { data } = useFetchAllTasksQuery({ limit: 0, page: 0 });
     const [updateTask, { isLoading }] = useFetchUpdateTaskMutation();
 
     const {
@@ -38,7 +38,7 @@ const UpdateTaskComponent: React.FC = () => {
         formState: { errors }
     } = useForm<IUpdateForm>(UpdateTaskFormValidation);
 
-    const currentTask = data ? data.filter((task: ITask) => task._id === params.taskId) : [];
+    const currentTask = data?.tasks ? data.tasks.filter((task: ITask) => task._id === params.taskId) : [];
     const { title, subtitle, description, deadline, _id, completed } =
         currentTask[0];
 

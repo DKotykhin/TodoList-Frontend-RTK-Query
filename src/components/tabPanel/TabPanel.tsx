@@ -5,6 +5,7 @@ import { Box, Tab, Tabs, Container } from "@mui/material";
 
 import CardList from "components/cardList/CardList";
 import Spinner from "components/spinner/Spinner";
+import PaginationControlled from "components/cardList/PaginationControlled";
 
 import { useFetchAllTasksQuery } from "services/taskServices";
 
@@ -52,15 +53,20 @@ function a11yProps(index: number) {
 
 const TabPanelComponent: React.FC = () => {
     const [value, setValue] = useState(0);
+    const [currentPageNumber, setCurrentPageNumber] = useState(1);
 
-    const { data, isSuccess, isError } = useFetchAllTasksQuery();
-    const allTasks = data ? data : []
-    const activeTasks = data ? data.filter((task: ITask) => task.completed === false) : [];
-    const completedTasks = data ? data.filter((task: ITask) => task.completed === true) : [];
+    const { data, isSuccess, isError } = useFetchAllTasksQuery({ limit: 6, page: currentPageNumber });
+    const allTasks = data?.tasks ? data.tasks : [];
+    const activeTasks = data?.tasks ? data.tasks.filter((task: ITask) => task.completed === false) : [];
+    const completedTasks = data?.tasks ? data.tasks.filter((task: ITask) => task.completed === true) : [];
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
+
+    const currentPage = (value: number) => {
+        setCurrentPageNumber(value)
+    }
 
     return isSuccess ? (
         <Container maxWidth="xl">
@@ -83,6 +89,12 @@ const TabPanelComponent: React.FC = () => {
             <TabPanel value={value} index={2}>
                 <CardList taskdata={completedTasks} />
             </TabPanel>
+            {data?.totalPagesQty > 1 &&
+                <PaginationControlled
+                    totalPagesQty={data?.totalPagesQty}
+                    currentPage={currentPage}
+                    currentPageNumber={currentPageNumber} />
+            }
         </Container>
     ) : isError ? <Navigate to='/login' /> : <Spinner />
 

@@ -2,13 +2,9 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { getToken } from "./getToken";
 import { setUserAvatar, updateAvatar } from "store/userSlice";
+import { IUserLogin, IUserRegister, IUserUpdate } from "types/userTypes";
 import {
-    IUserAvatar,
-    IUserLogin,
-    IUserRegister,
-    IUserUpdate,
-} from "types/userTypes";
-import {
+    IUserAvatarResponse,
     IUserConfirmPasswordResponse,
     IUserDeleteResponse,
     IUserResponse,
@@ -98,7 +94,7 @@ export const fetchUser = createApi({
                 body: JSON.stringify(data),
             }),
         }),
-        fetchUploadAvatar: builder.mutation<IUserAvatar, FormData>({
+        fetchUploadAvatar: builder.mutation<IUserAvatarResponse, FormData>({
             query: (data) => ({
                 method: "POST",
                 url: "/upload",
@@ -115,7 +111,7 @@ export const fetchUser = createApi({
             },
             invalidatesTags: ["User"],
         }),
-        fetchDeleteAvatar: builder.mutation<IUserAvatar, void>({
+        fetchDeleteAvatar: builder.mutation<IUserAvatarResponse, void>({
             query: () => ({
                 method: "DELETE",
                 url: "/upload",

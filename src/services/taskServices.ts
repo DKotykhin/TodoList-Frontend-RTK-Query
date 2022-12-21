@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { getToken } from "./getToken";
-import { IAddTask, ICompleteTask, ITask, IUpdateTask } from "types/taskTypes";
+import { IAddTask, ICompleteTask, IUpdateTask } from "types/taskTypes";
 import { ITaskResponse, ITaskStatusResponse } from "types/responseTypes";
 
 const Base_URL = process.env.REACT_APP_BACKEND_URL;
@@ -11,10 +11,14 @@ export const fetchTask = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: Base_URL }),
     tagTypes: ["Task"],
     endpoints: (builder) => ({
-        fetchAllTasks: builder.query<ITask[], void>({
-            query: () => ({
+        fetchAllTasks: builder.query<ITaskResponse, {limit: number, page: number}>({
+            query: (data) => ({
                 url: "/task",
                 headers: { Authorization: `Bearer ${getToken()}` },
+                params: {
+                    limit: data.limit,
+                    page: data.page
+                }
             }),
             providesTags: ["Task"],
         }),

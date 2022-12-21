@@ -23,11 +23,6 @@ export interface IuserWithToken extends IUser {
     token: string
 }
 
-export interface IUserAvatar {
-    avatarURL: string;
-    message: string;
-}
-
 export interface RequestError {
     status: number;
     data: {
