@@ -37,7 +37,8 @@ const FullCardButtons: React.FC<IFullCardButtons> = ({ task, deleteLoading, clos
     };
 
     const handleComplete = async (data: ITask) => {
-        const newData: ICompleteTask = { completed: !data.completed, _id: data._id, title: data.title };
+        closeModal();
+        const newData: ICompleteTask = { completed: !data.completed, _id: data._id, title: data?.title };
         await updateTask(newData)
             .unwrap()
             // .then(res => console.log(res))

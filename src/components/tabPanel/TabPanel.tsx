@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 
 import { Box, Tab, Tabs, Container } from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
 
 import CardList from "components/cardList/CardList";
 import Spinner from "components/spinner/Spinner";
 import PaginationControlled from "./PaginationControlled";
 
 import { useFetchAllTasksQuery } from "services/taskServices";
+import { useAppDispatch } from "store/hook";
+import { setQuery } from "store/querySlice";
 
 import PropTypes from "prop-types";
-import { ITask } from "types/taskTypes";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -54,11 +56,27 @@ function a11yProps(index: number) {
 const TabPanelComponent: React.FC = () => {
     const [value, setValue] = useState(0);
     const [currentPageNumber, setCurrentPageNumber] = useState(1);
+    const [showSearchPanel, setShowSearchPanel] = useState(false);
 
-    const { data, isSuccess, isError } = useFetchAllTasksQuery({ limit: 6, page: currentPageNumber });
-    const allTasks = data?.tasks ? data.tasks : [];
-    const activeTasks = data?.tasks ? data.tasks.filter((task: ITask) => task.completed === false) : [];
-    const completedTasks = data?.tasks ? data.tasks.filter((task: ITask) => task.completed === true) : [];
+    const dispatch = useAppDispatch();
+
+    const { data, isSuccess, isError } = useFetchAllTasksQuery({ limit: 6, page: currentPageNumber, key: value });
+    const tasks = data?.tasks ? data.tasks : [];
+
+    useEffect(() => {
+        if (data?.tasksOnPageQty === 0) {
+            setCurrentPageNumber(prev => prev - 1);
+        }
+    }, [data?.tasksOnPageQty]);
+
+    useEffect(() => {
+        setCurrentPageNumber(1);
+    }, [value]);
+
+    useEffect(() => {
+        const queryData = { limit: 6, page: currentPageNumber, key: value };
+        dispatch(setQuery({ query: queryData }))
+    }, [currentPageNumber, dispatch, value])
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
@@ -67,11 +85,14 @@ const TabPanelComponent: React.FC = () => {
     const currentPage = (value: number) => {
         setCurrentPageNumber(value);
     };
+    const handleClick = () => {
+        setShowSearchPanel(prev => !prev);
+    };
 
     return isSuccess ? (
         <Container maxWidth="xl">
-            <Box sx={{ minHeight: 'calc(100vh - 230px)'}}>
-                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <Box sx={{ minHeight: 'calc(100vh - 230px)' }}>
+                <Box sx={{ borderBottom: 1, borderColor: "divider", display: 'flex', justifyContent: 'space-between' }}>
                     <Tabs
                         value={value}
                         onChange={handleChange}
@@ -80,15 +101,18 @@ const TabPanelComponent: React.FC = () => {
                         <Tab label="Active" {...a11yProps(1)} />
                         <Tab label="Done" {...a11yProps(2)} />
                     </Tabs>
+                    <Box sx={{ color: '#808080', mt: 2 }}>
+                        <SearchIcon onClick={handleClick} />
+                    </Box>
                 </Box>
                 <TabPanel value={value} index={0}>
-                    <CardList taskdata={allTasks} />
+                    <CardList taskdata={tasks} showSearchPanel={showSearchPanel} />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                    <CardList taskdata={activeTasks} />
+                    <CardList taskdata={tasks} showSearchPanel={showSearchPanel} />
                 </TabPanel>
                 <TabPanel value={value} index={2}>
-                    <CardList taskdata={completedTasks} />
+                    <CardList taskdata={tasks} showSearchPanel={showSearchPanel} />
                 </TabPanel>
             </Box>
             <Box>

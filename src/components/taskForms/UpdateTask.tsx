@@ -12,6 +12,7 @@ import SubmitCancelButtons from "./SubmitCancelButtons";
 import { TitleField, MDEField, SubtitleField, DeadlineField } from "../taskFields";
 import { useFetchUpdateTaskMutation, useFetchAllTasksQuery } from "services/taskServices";
 
+import { useAppSelector } from 'store/hook';
 import { ITask, IUpdateTask } from "types/taskTypes";
 
 import "./task.scss";
@@ -29,7 +30,9 @@ const UpdateTaskComponent: React.FC = () => {
     const [mdeValue, setMdeValue] = useState("");;
     const navigate = useNavigate();
 
-    const { data } = useFetchAllTasksQuery({ limit: 0, page: 0 });
+    const query = useAppSelector((state) => state.query);
+
+    const { data } = useFetchAllTasksQuery(query.query);
     const [updateTask, { isLoading }] = useFetchUpdateTaskMutation();
 
     const {
@@ -39,6 +42,7 @@ const UpdateTaskComponent: React.FC = () => {
     } = useForm<IUpdateForm>(UpdateTaskFormValidation);
 
     const currentTask = data?.tasks ? data.tasks.filter((task: ITask) => task._id === params.taskId) : [];
+
     const { title, subtitle, description, deadline, _id, completed } =
         currentTask[0];
 
