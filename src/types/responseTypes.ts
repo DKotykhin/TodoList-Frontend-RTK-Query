@@ -33,6 +33,10 @@ export interface ITaskResponse {
     message: string;
 }
 
+export interface IAddTaskResponse extends ITask {    
+    message: string;
+}
+
 export interface ITaskStatusResponse {
     status: object;
     message: string;

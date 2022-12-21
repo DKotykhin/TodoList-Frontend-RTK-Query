@@ -71,7 +71,7 @@ const CardList: React.FC<ICardList> = ({ taskdata }) => {
             <Modal open={cardFullOpen} onClose={cardFullClose}>
                 <Box sx={{ boxShadow: 24 }} className='cardlist fullcard'>
                     <FullCard
-                        task={updatedTask}                        
+                        task={updatedTask}
                         deleteLoading={deleteLoading}
                         closeModal={cardFullClose}
                     />
@@ -85,7 +85,7 @@ const CardList: React.FC<ICardList> = ({ taskdata }) => {
                 >
                     Add Task
                 </Button>
-            </Box>            
+            </Box>
             <Typography className="cardlist subtitle">
                 {loading ? "Loading..." : taskList.length
                     ? `Total amount: ${taskList.length}`
@@ -98,7 +98,7 @@ const CardList: React.FC<ICardList> = ({ taskdata }) => {
                 </>
             )}
             <SearchTask onSearch={onSearch} />
-            <Grid container>
+            <Grid container sx={{ mb: 4 }}>
                 {taskList?.map((task) => (
                     <Grid item xs={12} md={6} xl={4} key={task._id}>
                         <Box className="cardlist short_card">

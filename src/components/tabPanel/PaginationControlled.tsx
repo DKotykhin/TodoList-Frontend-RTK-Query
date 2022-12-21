@@ -16,10 +16,7 @@ const PaginationControlled: React.FC<IPaginationControlled> =
         return (
             <Stack spacing={2} sx={{
                 textAlign: 'center',
-                position: 'fixed',
-                bottom: '100px',
-                left: 0,
-                right: 0,
+                marginBottom: '30px',
                 '& > *': {
                     display: 'flex',
                     justifyContent: "center",

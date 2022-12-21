@@ -5,7 +5,7 @@ import { Box, Tab, Tabs, Container } from "@mui/material";
 
 import CardList from "components/cardList/CardList";
 import Spinner from "components/spinner/Spinner";
-import PaginationControlled from "components/cardList/PaginationControlled";
+import PaginationControlled from "./PaginationControlled";
 
 import { useFetchAllTasksQuery } from "services/taskServices";
 
@@ -65,36 +65,40 @@ const TabPanelComponent: React.FC = () => {
     };
 
     const currentPage = (value: number) => {
-        setCurrentPageNumber(value)
-    }
+        setCurrentPageNumber(value);
+    };
 
     return isSuccess ? (
         <Container maxWidth="xl">
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                >
-                    <Tab label="All" {...a11yProps(0)} />
-                    <Tab label="Active" {...a11yProps(1)} />
-                    <Tab label="Done" {...a11yProps(2)} />
-                </Tabs>
+            <Box sx={{ minHeight: 'calc(100vh - 230px)'}}>
+                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                    <Tabs
+                        value={value}
+                        onChange={handleChange}
+                    >
+                        <Tab label="All" {...a11yProps(0)} />
+                        <Tab label="Active" {...a11yProps(1)} />
+                        <Tab label="Done" {...a11yProps(2)} />
+                    </Tabs>
+                </Box>
+                <TabPanel value={value} index={0}>
+                    <CardList taskdata={allTasks} />
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                    <CardList taskdata={activeTasks} />
+                </TabPanel>
+                <TabPanel value={value} index={2}>
+                    <CardList taskdata={completedTasks} />
+                </TabPanel>
             </Box>
-            <TabPanel value={value} index={0}>
-                <CardList taskdata={allTasks} />
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                <CardList taskdata={activeTasks} />
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                <CardList taskdata={completedTasks} />
-            </TabPanel>
-            {data?.totalPagesQty > 1 &&
-                <PaginationControlled
-                    totalPagesQty={data?.totalPagesQty}
-                    currentPage={currentPage}
-                    currentPageNumber={currentPageNumber} />
-            }
+            <Box>
+                {data?.totalPagesQty > 1 &&
+                    <PaginationControlled
+                        totalPagesQty={data?.totalPagesQty}
+                        currentPage={currentPage}
+                        currentPageNumber={currentPageNumber} />
+                }
+            </Box>
         </Container>
     ) : isError ? <Navigate to='/login' /> : <Spinner />
 

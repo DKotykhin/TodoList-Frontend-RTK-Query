@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { getToken } from "./getToken";
 import { IAddTask, ICompleteTask, IUpdateTask } from "types/taskTypes";
-import { ITaskResponse, ITaskStatusResponse } from "types/responseTypes";
+import { IAddTaskResponse, ITaskResponse, ITaskStatusResponse } from "types/responseTypes";
 
 const Base_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -22,7 +22,7 @@ export const fetchTask = createApi({
             }),
             providesTags: ["Task"],
         }),
-        fetchAddTask: builder.mutation<ITaskResponse, IAddTask>({
+        fetchAddTask: builder.mutation<IAddTaskResponse, IAddTask>({
             query: (data) => ({
                 method: "POST",
                 url: "/task",
