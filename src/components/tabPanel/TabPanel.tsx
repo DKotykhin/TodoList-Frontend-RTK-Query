@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 
-import { Box, Tab, Tabs, Container } from "@mui/material";
+import { Box, Tab, Tabs, Container, Typography } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 
 import CardList from "components/cardList/CardList";
 import Spinner from "components/spinner/Spinner";
 import PaginationControlled from "./PaginationControlled";
+import SelectTaskCount from "./SelectTaskCount";
 
 import { useFetchAllTasksQuery } from "services/taskServices";
 import { useAppDispatch } from "store/hook";
@@ -57,10 +58,11 @@ const TabPanelComponent: React.FC = () => {
     const [value, setValue] = useState(0);
     const [currentPageNumber, setCurrentPageNumber] = useState(1);
     const [showSearchPanel, setShowSearchPanel] = useState(false);
+    const [totalTasks, setTotalTasks] = useState('6');
 
     const dispatch = useAppDispatch();
 
-    const { data, isSuccess, isError } = useFetchAllTasksQuery({ limit: 6, page: currentPageNumber, key: value });
+    const { data, isSuccess, isError } = useFetchAllTasksQuery({ limit: parseInt(totalTasks), page: currentPageNumber, key: value });
     const tasks = data?.tasks ? data.tasks : [];
 
     useEffect(() => {
@@ -74,19 +76,23 @@ const TabPanelComponent: React.FC = () => {
     }, [value]);
 
     useEffect(() => {
-        const queryData = { limit: 6, page: currentPageNumber, key: value };
+        const queryData = { limit: parseInt(totalTasks), page: currentPageNumber, key: value };
         dispatch(setQuery({ query: queryData }))
-    }, [currentPageNumber, dispatch, value])
+    }, [currentPageNumber, dispatch, totalTasks, value])
 
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
 
-    const currentPage = (value: number) => {
+    const handleCurrentPageNumber = (value: number) => {
         setCurrentPageNumber(value);
     };
-    const handleClick = () => {
+    const handleShowSearchPanel = () => {
         setShowSearchPanel(prev => !prev);
+    };
+
+    const handleTotalTasks = (data: string) => {        
+        setTotalTasks(data);
     };
 
     return isSuccess ? (
@@ -95,14 +101,14 @@ const TabPanelComponent: React.FC = () => {
                 <Box sx={{ borderBottom: 1, borderColor: "divider", display: 'flex', justifyContent: 'space-between' }}>
                     <Tabs
                         value={value}
-                        onChange={handleChange}
+                        onChange={handleChangeTab}
                     >
                         <Tab label="All" {...a11yProps(0)} />
                         <Tab label="Active" {...a11yProps(1)} />
                         <Tab label="Done" {...a11yProps(2)} />
                     </Tabs>
                     <Box sx={{ color: '#808080', mt: 2 }}>
-                        <SearchIcon onClick={handleClick} />
+                        <SearchIcon onClick={handleShowSearchPanel} />
                     </Box>
                 </Box>
                 <TabPanel value={value} index={0}>
@@ -115,11 +121,15 @@ const TabPanelComponent: React.FC = () => {
                     <CardList taskdata={tasks} showSearchPanel={showSearchPanel} />
                 </TabPanel>
             </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+                <Typography sx={{ mt: 1, mr: 2, color: '#808080' }}>tasks on page:</Typography>
+                <SelectTaskCount totalTasks={totalTasks} setTotalTasks={handleTotalTasks} />
+            </Box>
             <Box>
                 {data?.totalPagesQty > 1 &&
                     <PaginationControlled
                         totalPagesQty={data?.totalPagesQty}
-                        currentPage={currentPage}
+                        currentPage={handleCurrentPageNumber}
                         currentPageNumber={currentPageNumber} />
                 }
             </Box>

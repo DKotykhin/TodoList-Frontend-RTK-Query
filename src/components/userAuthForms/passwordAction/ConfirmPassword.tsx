@@ -44,7 +44,7 @@ const ConfirmPassword: React.FC<IConfirmPassword> = ({ confirmStatus }) => {
                     setError(response.message);
                 }
             })
-            .catch((error) => {
+            .catch((error: { data: { message: string }}) => {
                 console.log(error.data.message);
                 setError(error.data.message);
             })

@@ -42,7 +42,7 @@ const ChangePassword: React.FC = () => {
                     setLoaded('Password successfully changed!');
                     reset();
                 })
-                .catch((error) => {
+                .catch((error: { data: { message: string }}) => {
                     console.log(error.data.message);
                     setError(error.data.message);
                 })

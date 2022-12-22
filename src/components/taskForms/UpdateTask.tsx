@@ -62,7 +62,7 @@ const UpdateTaskComponent: React.FC = () => {
         await updateTask(totalData)
             .unwrap()
             .then(() => navigate("/", { replace: true }))
-            .catch((error) => {
+            .catch((error: { data: { message: string }}) => {
                 console.log(error.data.message);
                 alert(error.data.message);
             })

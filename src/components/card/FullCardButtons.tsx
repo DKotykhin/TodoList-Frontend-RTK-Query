@@ -26,7 +26,7 @@ const FullCardButtons: React.FC<IFullCardButtons> = ({ task, deleteLoading, clos
         await deleteTask({ _id: id })
             .unwrap()
             .then(() => deleteLoading(false))
-            .catch((error) => {
+            .catch((error: { data: { message: string }}) => {
                 console.log(error.data.message);
                 alert(error.data.message);
             })
@@ -42,7 +42,7 @@ const FullCardButtons: React.FC<IFullCardButtons> = ({ task, deleteLoading, clos
         await updateTask(newData)
             .unwrap()
             // .then(res => console.log(res))
-            .catch((error) => {
+            .catch((error: { data: { message: string }}) => {
                 console.log(error.data.message);
                 alert(error.data.message);
             })
