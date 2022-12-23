@@ -60,11 +60,13 @@ const CardList: React.FC<ICardList> = ({ taskdata, showSearchPanel }) => {
     };
 
     const onSearch = (data: string): void => {
-        const newTaskdata = SortAction(taskdata, sortField, sortOrder);
-        const filterData = newTaskdata.filter((task) =>
-            task.title.toLowerCase().includes(data)
-        );
-        setTaskList(filterData);
+        setTimeout(() => {
+            const newTaskdata = SortAction(taskdata, sortField, sortOrder);
+            const filterData = newTaskdata.filter((task) =>
+                task.title.toLowerCase().includes(data)
+            );
+            setTaskList(filterData);
+        }, 300);
     };
 
     return (
@@ -92,8 +94,8 @@ const CardList: React.FC<ICardList> = ({ taskdata, showSearchPanel }) => {
             </Typography>
             {taskList.length > 1 && (
                 <>
-                    <FieldSort onSelect={FieldSelect} />
-                    <AZSort onSelect={AZSelect} />
+                    <FieldSort onSelect={FieldSelect} chipLabel={sortField} />
+                    <AZSort onSelect={AZSelect} chipLabel={sortOrder} />
                 </>
             )}
             {showSearchPanel &&
