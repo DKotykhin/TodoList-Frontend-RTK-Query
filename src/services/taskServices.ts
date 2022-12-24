@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { getToken } from "./getToken";
-import { IAddTask, ICompleteTask, IUpdateTask } from "types/taskTypes";
+import { IAddTask, ICompleteTask, IQueryData, IUpdateTask } from "types/taskTypes";
 import {
     IAddTaskResponse,
     ITaskResponse,
@@ -15,17 +15,17 @@ export const fetchTask = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: Base_URL }),
     tagTypes: ["Task"],
     endpoints: (builder) => ({
-        fetchAllTasks: builder.query<
-            ITaskResponse,
-            { limit: number; page: number; key: number }
-        >({
+        fetchAllTasks: builder.query<ITaskResponse, IQueryData>({
             query: (data) => ({
                 url: "/task",
                 headers: { Authorization: `Bearer ${getToken()}` },
                 params: {
                     limit: data.limit,
                     page: data.page,
-                    key: data.key
+                    tabKey: data.tabKey,
+                    sortField: data.sortField,
+                    sortOrder: data.sortOrder,
+                    search: data.search
                 },
             }),
             providesTags: ["Task"],

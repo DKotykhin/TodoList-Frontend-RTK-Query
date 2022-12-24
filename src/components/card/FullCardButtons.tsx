@@ -8,11 +8,12 @@ import { useFetchDeleteTaskMutation, useFetchUpdateTaskMutation } from "services
 
 interface IFullCardButtons {
     task: ITask;
-    deleteLoading: (arg0: boolean) => void;
-    closeModal: () => void
+    successMessage: (arg0: string) => void;
+    errorMessage: (arg0: string) => void;
+    closeModal: () => void;
 }
 
-const FullCardButtons: React.FC<IFullCardButtons> = ({ task, deleteLoading, closeModal }) => {
+const FullCardButtons: React.FC<IFullCardButtons> = ({ task, successMessage, errorMessage, closeModal }) => {
     const { _id, completed } = task;
 
     const [updateTask, { isLoading }] = useFetchUpdateTaskMutation();
@@ -21,14 +22,16 @@ const FullCardButtons: React.FC<IFullCardButtons> = ({ task, deleteLoading, clos
     const navigate = useNavigate();
 
     const handleDelete = async (id: string) => {
-        deleteLoading(true);
+        successMessage('');
+        errorMessage('');
         closeModal();
         await deleteTask({ _id: id })
             .unwrap()
-            .then(() => deleteLoading(false))
-            .catch((error: { data: { message: string }}) => {
-                console.log(error.data.message);
-                alert(error.data.message);
+            .then((res) => {
+                successMessage(res.message)
+            })
+            .catch((error: { data: { message: string } }) => {
+                errorMessage(error.data.message);
             })
     };
 
@@ -37,14 +40,17 @@ const FullCardButtons: React.FC<IFullCardButtons> = ({ task, deleteLoading, clos
     };
 
     const handleComplete = async (data: ITask) => {
+        successMessage('');
+        errorMessage('');
         closeModal();
         const newData: ICompleteTask = { completed: !data.completed, _id: data._id, title: data?.title };
         await updateTask(newData)
             .unwrap()
-            // .then(res => console.log(res))
-            .catch((error: { data: { message: string }}) => {
-                console.log(error.data.message);
-                alert(error.data.message);
+            .then(res => {
+                successMessage(res.message)
+            })
+            .catch((error: { data: { message: string } }) => {
+                errorMessage(error.data.message);
             })
     };
 

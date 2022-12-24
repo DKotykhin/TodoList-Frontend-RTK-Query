@@ -1,17 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { IQueryData } from "types/taskTypes";
 
-interface IQuery {
-    query: {
-        limit: number;
-        page: number;
-        key: number;
-    }
+interface IQuerySlise {
+    query: IQueryData;
 }
-const initialState: IQuery = {
+const initialState: IQuerySlise = {
     query: {
-        limit: 0,
-        page: 0,
-        key: 0
+        limit: '6',
+        page: 1,
+        tabKey: 0,
+        sortField: 'createdAt',
+        sortOrder: -1,
+        search: ''
     }
 };
 
@@ -19,7 +19,7 @@ const QuerySlice = createSlice({
     name: "query",
     initialState,
     reducers: {
-        setQuery: (state, action: PayloadAction<IQuery>) => {
+        setQuery: (state, action: PayloadAction<IQuerySlise>) => {
             state.query = action.payload.query;
         },
     },

@@ -9,7 +9,7 @@ import query from './querySlice';
 const store = configureStore({
     reducer: {
         user,
-        query,              
+        query,                    
         [fetchUser.reducerPath]: fetchUser.reducer,
         [fetchTask.reducerPath]: fetchTask.reducer,
     },

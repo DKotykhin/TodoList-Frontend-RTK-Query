@@ -30,9 +30,9 @@ const UpdateTaskComponent: React.FC = () => {
     const [mdeValue, setMdeValue] = useState("");;
     const navigate = useNavigate();
 
-    const query = useAppSelector((state) => state.query);
+    const { query } = useAppSelector((state) => state.query);
 
-    const { data } = useFetchAllTasksQuery(query.query);
+    const { data } = useFetchAllTasksQuery(query);
     const [updateTask, { isLoading }] = useFetchUpdateTaskMutation();
 
     const {
@@ -62,7 +62,7 @@ const UpdateTaskComponent: React.FC = () => {
         await updateTask(totalData)
             .unwrap()
             .then(() => navigate("/", { replace: true }))
-            .catch((error: { data: { message: string }}) => {
+            .catch((error: { data: { message: string } }) => {
                 console.log(error.data.message);
                 alert(error.data.message);
             })

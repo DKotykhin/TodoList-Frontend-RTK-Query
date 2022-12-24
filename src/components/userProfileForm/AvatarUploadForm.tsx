@@ -26,18 +26,21 @@ const AvatarUploadForm: React.FC<{ user?: IUser }> = ({ user }) => {
     const [loadAvatar, { isLoading }] = useFetchUploadAvatarMutation();
     const userAvatarURL = user?.avatarURL ? Base_URL + user.avatarURL : "/";
 
-    const onChange = (e: any) => {       
+    const onChange = (e: any) => {              
         setFileName(e.target.files[0].name);
         const isApproved = checkFileType(e.target.files[0].type);
         if (!isApproved) setLoadError("Incorrect file type");
         if (e.target.files[0].size > 1024000) setLoadError("File shoul be less then 1Mb");
     };
     const onReset = () => {        
-        setFileName("");
         reset();
+        setFileName("");
+        setLoadError('');
     };
 
     const onSubmit = async (data: FieldValues) => {
+        setLoadError('');
+        setLoadSuccess('');
         const isApproved = checkFileType(data.avatar[0].type);
         if (!isApproved) {
             setLoadError("Can't upload this type of file");
@@ -51,8 +54,8 @@ const AvatarUploadForm: React.FC<{ user?: IUser }> = ({ user }) => {
                 .then(response => {
                     console.log(response.message);
                     setLoadSuccess(response.message);
-                    reset();
                     setFileName("");
+                    reset();
                 })
                 .catch((error) => {
                     console.log(error.data.message);

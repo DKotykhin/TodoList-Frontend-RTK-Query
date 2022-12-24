@@ -1,45 +1,95 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useMemo } from 'react';
+import { Navigate } from "react-router-dom";
 
-import { Box, Container, Typography, Grid, Button, Modal } from "@mui/material";
+import { Box, Container, Typography, Grid, Modal } from "@mui/material";
 
-import ShortCard from "components/card/ShortCard";
-import FullCard from "components/card/FullCard";
-import FieldSort from "components/cardSort/FieldSort";
-import AZSort from "components/cardSort/AZSort";
-import SortAction from "./SortAction";
-import SearchTask from "components/searchTask/SearchTask";
+import SelectTaskCount from './SelectTaskCount';
+import PaginationControlled from './PaginationControlled';
+import ShortCard from 'components/card/ShortCard';
+import FullCard from 'components/card/FullCard';
+import Spinner from 'components/spinner/Spinner';
+import SnackBar from 'components/snackBar/SnackBar';
 
-import { ITask } from "types/taskTypes";
+import { useFetchAllTasksQuery } from "services/taskServices";
+
+import { setQuery } from "store/querySlice";
+import { useAppDispatch, useAppSelector } from "store/hook";
 
 import "./cardList.scss";
 
-interface ICardList {
-    taskdata: ITask[];
-    showSearchPanel: boolean;
+interface ICardListNew {
+    tabIndex: number;
+    searchQuery: string;
+    fieldData: string;
+    AZData: string;
 }
 
-const CardList: React.FC<ICardList> = ({ taskdata, showSearchPanel }) => {
-    const [loading, setLoading] = useState(false);
-    const [sortOrder, setSortOrder] = useState("A-z");
-    const [sortField, setSortField] = useState("created");
+const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldData, AZData }) => {
+
+    const { query: { limit, page, sortField, sortOrder } } = useAppSelector((state) => state.query);
+
+    const [totalTasks, setTotalTasks] = useState(limit);
+    const [currentPageNumber, setCurrentPageNumber] = useState(page);
+
+    const [sortParams, setSortParams] = useState({ sortField, sortOrder });
+
     const [cardFullOpen, setCardFullOpen] = useState(false);
     const [cardFullId, setCardFullId] = useState("");
-    const [taskList, setTaskList] = useState(taskdata);
 
-    const navigate = useNavigate();
+    const [succsessMessageHook, setSuccsessMessageHook] = useState("");
+    const [errorMessageHook, setErrorMessageHook] = useState("");
 
-    const updatedTask = taskdata.filter((task) => task._id === cardFullId)[0];
+    const dispatch = useAppDispatch();
+
+    const query = useMemo(
+        () => ({
+            limit: totalTasks,
+            page: currentPageNumber,
+            tabKey: tabIndex,
+            sortField: sortParams.sortField,
+            sortOrder: sortParams.sortOrder,
+            search: searchQuery
+        }),
+        [currentPageNumber, searchQuery, sortParams.sortField, sortParams.sortOrder, tabIndex, totalTasks]
+    );
+
+    const { data, isSuccess, isError, isFetching } = useFetchAllTasksQuery(query);
+    const taskdata = data?.tasks ? data.tasks : [];
+    const fullCard = taskdata.filter((task) => task._id === cardFullId)[0];
 
     useEffect(() => {
-        setTaskList(SortAction(taskdata, sortField, sortOrder));
-    }, [sortField, sortOrder, taskdata]);
+        if (data?.tasksOnPageQty === 0) {
+            setCurrentPageNumber(prev => prev - 1);
+        }
+    }, [data?.tasksOnPageQty]);
 
-    const FieldSelect = (data: string): void => {
-        setSortField(data);
+    useEffect(() => {
+        setCurrentPageNumber(1);
+    }, [tabIndex]);
+
+    useEffect(() => {
+        dispatch(setQuery({ query }));
+    }, [dispatch, query]);
+
+    useEffect(() => {
+        switch (fieldData) {
+            case ('created'): setSortParams({ sortField: 'createdAt', sortOrder: AZData === 'A-z' ? -1 : 1 });
+                break;
+            case ('deadline'): setSortParams({ sortField: 'deadline', sortOrder: AZData === 'A-z' ? 1 : -1 });
+                break;
+            case ('title'): setSortParams({ sortField: 'title', sortOrder: AZData === 'A-z' ? 1 : -1 });
+                break;
+            default: setSortParams({ sortField: 'createdAt', sortOrder: -1 });
+                break;
+        }
+    }, [fieldData, AZData]);
+
+    const handleTotalTasks = (data: string) => {
+        setTotalTasks(data);
     };
-    const AZSelect = (data: string): void => {
-        setSortOrder(data);
+
+    const handleCurrentPageNumber = (value: number) => {
+        setCurrentPageNumber(value);
     };
 
     const handleOpenFullCard = (data: string): void => {
@@ -51,68 +101,60 @@ const CardList: React.FC<ICardList> = ({ taskdata, showSearchPanel }) => {
         setCardFullOpen(false);
     };
 
-    const handleAddTask = (): void => {
-        navigate("/addtask");
+    const successMessage = (data: string): void => {
+        setSuccsessMessageHook(data);
     };
 
-    const deleteLoading = (data: boolean): void => {
-        setLoading(data);
+    const errorMessage = (data: string): void => {
+        setErrorMessageHook(data);
     };
 
-    const onSearch = (data: string): void => {
-        setTimeout(() => {
-            const newTaskdata = SortAction(taskdata, sortField, sortOrder);
-            const filterData = newTaskdata.filter((task) =>
-                task.title.toLowerCase().includes(data)
-            );
-            setTaskList(filterData);
-        }, 300);
-    };
+    if (isFetching) return <Spinner />;
 
-    return (
+    return isSuccess ? (
         <Container className="cardList" maxWidth="xl">
-            <Modal open={cardFullOpen} onClose={cardFullClose}>
-                <Box sx={{ boxShadow: 24 }} className='cardList fullCard'>
-                    <FullCard
-                        task={updatedTask}
-                        deleteLoading={deleteLoading}
-                        closeModal={cardFullClose}
-                    />
-                </Box>
-            </Modal>
-            <Button
-                className="cardList button"
-                variant="contained"
-                onClick={handleAddTask}
-            >
-                Add Task
-            </Button>
-            <Typography className="cardList subtitle">
-                {loading ? "Loading..." : taskList.length
-                    ? `Total amount: ${taskList.length}`
-                    : "No cards"}
-            </Typography>
-            {taskList.length > 1 && (
-                <>
-                    <FieldSort onSelect={FieldSelect} chipLabel={sortField} />
-                    <AZSort onSelect={AZSelect} chipLabel={sortOrder} />
-                </>
-            )}
-            {showSearchPanel &&
-                <SearchTask onSearch={onSearch} />
-            }
-            <Grid container sx={{ mb: 4 }}>
-                {taskList?.map((task) => (
-                    <Grid item xs={12} md={6} xl={4} key={task._id} className="cardList shortCard">
-                        <ShortCard
-                            task={task}
-                            handleOpenFullCard={() => handleOpenFullCard(task._id)}
+            <Box className="cardList cardListBox">
+                <Modal open={cardFullOpen} onClose={cardFullClose}>
+                    <Box sx={{ boxShadow: 24 }} className='cardList fullCard'>
+                        <FullCard
+                            task={fullCard}
+                            successMessage={successMessage}
+                            errorMessage={errorMessage}
+                            closeModal={cardFullClose}
                         />
-                    </Grid>
-                ))}
-            </Grid>
+                    </Box>
+                </Modal>
+                <Typography className="cardList subtitle">
+                    {taskdata.length
+                        ? `Total amount: ${taskdata.length}`
+                        : "No cards"}
+                </Typography>
+                <Grid container sx={{ mb: 4 }}>
+                    {taskdata?.map((task) => (
+                        <Grid item xs={12} md={6} xl={4} key={task._id} className="cardList shortCard">
+                            <ShortCard
+                                task={task}
+                                handleOpenFullCard={() => handleOpenFullCard(task._id)}
+                            />
+                        </Grid>
+                    ))}
+                </Grid>
+            </Box>
+            <Box className="cardList taskAmountBox" >
+                <Typography className="cardList taskAmount" >tasks on page:</Typography>
+                <SelectTaskCount totalTasks={totalTasks} setTotalTasks={handleTotalTasks} />
+            </Box>
+            <Box>
+                {data?.totalPagesQty > 1 &&
+                    <PaginationControlled
+                        totalPagesQty={data?.totalPagesQty}
+                        currentPage={handleCurrentPageNumber}
+                        currentPageNumber={currentPageNumber} />
+                }
+            </Box>
+            <SnackBar successMessage={succsessMessageHook} errorMessage={errorMessageHook} />
         </Container>
-    );
-};
+    ) : isError ? <Navigate to='/login' /> : <Spinner />
+}
 
 export default CardList;

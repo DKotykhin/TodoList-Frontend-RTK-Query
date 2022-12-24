@@ -19,3 +19,12 @@ export interface ICompleteTask {
 export interface ITask extends IUpdateTask {
     createdAt: string;
 }
+
+export interface IQueryData {
+    limit: string;
+    page: number;
+    tabKey: number;
+    sortField: string;
+    sortOrder: number;
+    search: string;
+}
