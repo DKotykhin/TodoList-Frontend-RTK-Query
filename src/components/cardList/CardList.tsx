@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Navigate } from "react-router-dom";
 
-import { Box, Container, Typography, Grid, Modal } from "@mui/material";
+import { Box, Container, Typography, Modal } from "@mui/material";
 
 import SelectTaskCount from './SelectTaskCount';
 import PaginationControlled from './PaginationControlled';
-import ShortCard from 'components/card/ShortCard';
-import FullCard from 'components/card/FullCard';
+import ShortCardList from 'components/card/shortCard/ShortCardList';
+import FullCard from 'components/card/fullCard/FullCard';
 import Spinner from 'components/spinner/Spinner';
 import SnackBar from 'components/snackBar/SnackBar';
 
@@ -129,16 +129,7 @@ const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldData, AZ
                         ? `Total amount: ${taskdata.length}`
                         : "No cards"}
                 </Typography>
-                <Grid container sx={{ mb: 4 }}>
-                    {taskdata?.map((task) => (
-                        <Grid item xs={12} md={6} xl={4} key={task._id} className="cardList shortCard">
-                            <ShortCard
-                                task={task}
-                                handleOpenFullCard={() => handleOpenFullCard(task._id)}
-                            />
-                        </Grid>
-                    ))}
-                </Grid>
+                <ShortCardList taskdata={taskdata} handleOpenFullCard={handleOpenFullCard} />
             </Box>
             <Box className="cardList taskAmountBox" >
                 <Typography className="cardList taskAmount" >tasks on page:</Typography>
