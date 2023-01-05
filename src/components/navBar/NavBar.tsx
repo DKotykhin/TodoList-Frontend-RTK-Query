@@ -40,7 +40,7 @@ const NavBar: React.FC = () => {
                     <AssignmentTurnedInIcon sx={{ mr: 1 }} />
                     <Typography
                         component={RouterLink}
-                        to="/"
+                        to={userName ? "/" : "/login"}
                         className="navbar link_text"
                     >
                         TodoList
