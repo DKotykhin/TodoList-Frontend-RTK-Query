@@ -20,11 +20,11 @@ To run this project, you will need to add the following environment variables to
 
 
 
-## Deploy on Netlify
+## Deploy on Vercel
 
 
 
-  [todo-list-new-frontend.vercel.app](todo-list-new-frontend.vercel.app)
+  [todolist-frontend-rtk-query.vercel.app](todolist-frontend-rtk-query.vercel.app)
 
 
 
@@ -33,7 +33,7 @@ To run this project, you will need to add the following environment variables to
 Clone the project
 
 ```bash
-  git clone https://github.com/DKotykhin/TodoList-Frontend.git
+  git clone https://github.com/DKotykhin/TodoList-Frontend-RTK-Query.git
 ```
 
 Go to the project directory
