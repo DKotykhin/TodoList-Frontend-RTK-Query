@@ -29,8 +29,8 @@ const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldData, AZ
 
     const { query: { limit, page } } = useAppSelector((state) => state.query);
 
-    const [totalTasks, setTotalTasks] = useState(limit);
-    const [currentPageNumber, setCurrentPageNumber] = useState(page);
+    const [totalTasks, setTotalTasks] = useState<string>(limit);
+    const [currentPageNumber, setCurrentPageNumber] = useState<number>(page);
 
     const query = useFormQuery({
         totalTasks,

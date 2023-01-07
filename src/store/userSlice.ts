@@ -22,10 +22,14 @@ const UserSlice = createSlice({
         updateAvatar: (state, action: PayloadAction<IUserAvatarResponse>) => {            
             state.avatarURL = action.payload.avatarURL;
         },
+        updateName: (state, action: PayloadAction<string>) => {            
+            state.name = action.payload;
+
+        },
     },
 });
 
 const { actions, reducer } = UserSlice;
 
 export default reducer;
-export const { setUserAvatar, updateAvatar, logout } = actions;
+export const { setUserAvatar, updateAvatar, updateName, logout } = actions;

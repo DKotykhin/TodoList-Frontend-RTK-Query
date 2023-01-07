@@ -6,9 +6,9 @@ import { Box } from "@mui/system";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 
 import NavBarMenu from "./NavBarMenu";
-import { useFetchUserByTokenQuery } from "services/userServices";
-import { getToken } from "services/getToken";
+
 import { useAppSelector } from 'store/hook';
+import { IUser } from "types/userTypes";
 
 import "./navBar.scss";
 
@@ -17,13 +17,10 @@ const Base_URL = process.env.REACT_APP_BACKEND_URL;
 const NavBar: React.FC = () => {
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
-    const user = useAppSelector((state) => state.user);
-    const { data } = useFetchUserByTokenQuery(undefined, { skip: !getToken() });
+    const user: IUser = useAppSelector((state) => state.user);
     const userAvatarURL =
-        data?.avatarURL ? Base_URL + data.avatarURL
-            : user.avatarURL ? Base_URL + user.avatarURL
-                : "/";
-    const userName = data?.name ? data.name : user?.name;
+        user.avatarURL ? Base_URL + user.avatarURL : "/";
+    const userName = user.name;
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
