@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navigate } from "react-router-dom";
 
 import { Box, Container, Typography, Modal } from "@mui/material";
@@ -14,6 +14,7 @@ import { useFetchAllTasksQuery } from "services/taskServices";
 
 import { setQuery } from "store/querySlice";
 import { useAppDispatch, useAppSelector } from "store/hook";
+import { useFormQuery } from 'hooks/useFormQuery';
 
 import "./cardList.scss";
 
@@ -26,12 +27,19 @@ interface ICardListNew {
 
 const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldData, AZData }) => {
 
-    const { query: { limit, page, sortField, sortOrder } } = useAppSelector((state) => state.query);
+    const { query: { limit, page } } = useAppSelector((state) => state.query);
 
     const [totalTasks, setTotalTasks] = useState(limit);
     const [currentPageNumber, setCurrentPageNumber] = useState(page);
 
-    const [sortParams, setSortParams] = useState({ sortField, sortOrder });
+    const query = useFormQuery({
+        totalTasks,
+        currentPageNumber,
+        tabIndex,
+        searchQuery,
+        fieldData,
+        AZData
+    });
 
     const [cardFullOpen, setCardFullOpen] = useState(false);
     const [cardFullId, setCardFullId] = useState("");
@@ -40,18 +48,6 @@ const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldData, AZ
     const [errorMessageHook, setErrorMessageHook] = useState("");
 
     const dispatch = useAppDispatch();
-
-    const query = useMemo(
-        () => ({
-            limit: totalTasks,
-            page: currentPageNumber,
-            tabKey: tabIndex,
-            sortField: sortParams.sortField,
-            sortOrder: sortParams.sortOrder,
-            search: searchQuery
-        }),
-        [currentPageNumber, searchQuery, sortParams.sortField, sortParams.sortOrder, tabIndex, totalTasks]
-    );
 
     const { data, isSuccess, isError, isFetching } = useFetchAllTasksQuery(query);
     const taskdata = data?.tasks ? data.tasks : [];
@@ -70,19 +66,6 @@ const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldData, AZ
     useEffect(() => {
         dispatch(setQuery({ query }));
     }, [dispatch, query]);
-
-    useEffect(() => {
-        switch (fieldData) {
-            case ('created'): setSortParams({ sortField: 'createdAt', sortOrder: AZData === 'A-z' ? -1 : 1 });
-                break;
-            case ('deadline'): setSortParams({ sortField: 'deadline', sortOrder: AZData === 'A-z' ? 1 : -1 });
-                break;
-            case ('title'): setSortParams({ sortField: 'title', sortOrder: AZData === 'A-z' ? 1 : -1 });
-                break;
-            default: setSortParams({ sortField: 'createdAt', sortOrder: -1 });
-                break;
-        }
-    }, [fieldData, AZData]);
 
     const handleTotalTasks = (data: string) => {
         setTotalTasks(data);
