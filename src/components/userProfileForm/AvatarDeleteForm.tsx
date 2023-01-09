@@ -1,25 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { toast } from 'react-toastify';
 
 import DeleteDialog from "../userDeleteForm/DeleteDialog";
-import SnackBar from 'components/snackBar/SnackBar';
 
 import { useFetchDeleteAvatarMutation } from "services/userServices";
-import { IUser, RequestError } from 'types/userTypes';
+
+import { IUser } from 'types/userTypes';
 
 const AvatarDeleteForm: React.FC<{ user?: IUser }> = ({ user }) => {
 
-    const [deleteError, setDeleteError] = useState('');
-    const [deleteAvatar, { data, error }] = useFetchDeleteAvatarMutation();
-    const responseError = (error as RequestError)?.data.message;
+    const [deleteAvatar] = useFetchDeleteAvatarMutation();
 
     const handleDelete = async () => {
-        setDeleteError('');
         const avatarURL: string | undefined = user?.avatarURL;
         if (avatarURL) {
-            await deleteAvatar();
+            await deleteAvatar()
+                .unwrap()
+                .then(response => {
+                    toast.success(response.message);
+                })
+                .catch((error) => {
+                    toast.error(error.data.message);
+                })
         } else {
-            console.log("Avatar doesn't exist");
-            setDeleteError("Avatar doesn't exist");
+            toast.warn("Avatar doesn't exist");
         }
     }
 
@@ -29,7 +33,6 @@ const AvatarDeleteForm: React.FC<{ user?: IUser }> = ({ user }) => {
                 dialogTitle={"You really want to delete avatar?"}
                 deleteAction={handleDelete}
             />
-            <SnackBar successMessage={data?.message || ''} errorMessage={deleteError || responseError} />
         </>
     )
 }

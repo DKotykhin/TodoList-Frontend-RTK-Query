@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
+import { toast } from 'react-toastify';
 
 import { Button } from "@mui/material";
 import { Box } from "@mui/system";
 
 import { PasswordField } from "components/userFields";
-import SnackBar from "components/snackBar/SnackBar";
 import { NewPasswordFormValidation } from "../userFormValidation";
 import { useFetchUpdateUserMutation } from "services/userServices";
 
@@ -18,10 +18,7 @@ interface IPasswordData {
 
 const ChangePassword: React.FC = () => {
 
-    const [loaded, setLoaded] = useState('');
-    const [error, setError] = useState('');
-
-    const [updatePassword, { isLoading }] = useFetchUpdateUserMutation()
+    const [updatePassword, { isLoading }] = useFetchUpdateUserMutation();
 
     const {
         control,
@@ -31,24 +28,20 @@ const ChangePassword: React.FC = () => {
     } = useForm<IPasswordData>(NewPasswordFormValidation);
 
     const onSubmit = async (data: IPasswordData) => {
-        setError('');
-        setLoaded('');
         if (data.newpassword === data.confirmpassword) {
             const { newpassword } = data;
             await updatePassword({ password: newpassword })
                 .unwrap()
                 .then(response => {
                     console.log(response.message);
-                    setLoaded('Password successfully changed!');
+                    toast.success('Password successfully changed!');
                     reset();
                 })
-                .catch((error: { data: { message: string }}) => {
-                    console.log(error.data.message);
-                    setError(error.data.message);
+                .catch((error: { data: { message: string } }) => {
+                    toast.error(error.data.message);
                 })
         } else {
-            console.log("Passwords don't match");
-            setError("Passwords don't match");
+            toast.warn("Passwords don't match");
         }
     };
 
@@ -79,7 +72,6 @@ const ChangePassword: React.FC = () => {
                     {isLoading ? 'Loading...' : "Change password"}
                 </Button>
             </Box>
-            <SnackBar successMessage={loaded} errorMessage={error} />
         </>
     );
 }

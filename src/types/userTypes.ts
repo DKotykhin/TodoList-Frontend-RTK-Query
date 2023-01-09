@@ -22,10 +22,3 @@ export interface IUser {
 export interface IuserWithToken extends IUser {
     token: string
 }
-
-export interface RequestError {
-    status: number;
-    data: {
-        message: string;
-    }
-}

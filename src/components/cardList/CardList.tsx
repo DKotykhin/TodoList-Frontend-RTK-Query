@@ -8,7 +8,6 @@ import PaginationControlled from './PaginationControlled';
 import ShortCardList from 'components/card/shortCard/ShortCardList';
 import FullCard from 'components/card/fullCard/FullCard';
 import Spinner from 'components/spinner/Spinner';
-import SnackBar from 'components/snackBar/SnackBar';
 
 import { useFetchAllTasksQuery } from "services/taskServices";
 
@@ -43,9 +42,6 @@ const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldData, AZ
 
     const [cardFullOpen, setCardFullOpen] = useState(false);
     const [cardFullId, setCardFullId] = useState("");
-
-    const [succsessMessageHook, setSuccsessMessageHook] = useState("");
-    const [errorMessageHook, setErrorMessageHook] = useState("");
 
     const dispatch = useAppDispatch();
 
@@ -84,14 +80,6 @@ const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldData, AZ
         setCardFullOpen(false);
     };
 
-    const successMessage = (data: string): void => {
-        setSuccsessMessageHook(data);
-    };
-
-    const errorMessage = (data: string): void => {
-        setErrorMessageHook(data);
-    };
-
     if (isFetching) return <Spinner />;
 
     return isSuccess ? (
@@ -101,8 +89,6 @@ const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldData, AZ
                     <Box sx={{ boxShadow: 24 }} className='cardList fullCard'>
                         <FullCard
                             task={fullCard}
-                            successMessage={successMessage}
-                            errorMessage={errorMessage}
                             closeModal={cardFullClose}
                         />
                     </Box>
@@ -126,7 +112,6 @@ const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldData, AZ
                         currentPageNumber={currentPageNumber} />
                 }
             </Box>
-            <SnackBar successMessage={succsessMessageHook} errorMessage={errorMessageHook} />
         </Container>
     ) : isError ? <Navigate to='/login' /> : <Spinner />
 }

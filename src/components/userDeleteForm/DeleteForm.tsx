@@ -1,26 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 import { Typography, Paper } from "@mui/material";
 
 import DeleteDialog from "./DeleteDialog";
-import SnackBar from "components/snackBar/SnackBar";
 
 import { useFetchDeleteUserMutation } from "services/userServices";
 import { fetchUser } from "services/userServices";
+
 import { useAppDispatch } from "store/hook";
 import { logout } from "store/userSlice";
 
 const DeleteForm: React.FC = () => {
 
-    const [deleteError, setDeleteError] = useState('');
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const [deleteUser, { isLoading }] = useFetchDeleteUserMutation()
+    const [deleteUser, { isLoading }] = useFetchDeleteUserMutation();
 
-    const handleDelete = async () => {
-        setDeleteError('');
+    const handleDelete = async () => {      
         await deleteUser()
             .unwrap()
             .then(response => {
@@ -31,9 +30,8 @@ const DeleteForm: React.FC = () => {
                 localStorage.removeItem("rememberMe");
                 navigate("/login");
             })
-            .catch((error) => {
-                console.log(error.data.message);
-                setDeleteError(error.data.message);
+            .catch((error) => {                
+                toast.error(error.data.message);
             })
     };
 
@@ -41,8 +39,7 @@ const DeleteForm: React.FC = () => {
         <Paper elevation={10} sx={{ border: '2px solid #ff0000' }}>
             <Typography className="profile subtitle">
                 {isLoading ? 'Deleting...' : 'Need to delete Profile?'}
-            </Typography>
-            <SnackBar successMessage="" errorMessage={deleteError} />
+            </Typography>            
             <DeleteDialog
                 dialogTitle={"You really want to delete user?"}
                 deleteAction={handleDelete}

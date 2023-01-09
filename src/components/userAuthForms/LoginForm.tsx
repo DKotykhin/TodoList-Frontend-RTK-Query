@@ -1,15 +1,15 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
+import { toast } from 'react-toastify';
 
 import { Button, Container, Typography, Box, Avatar, Paper } from "@mui/material";
 import { InputLabel, Checkbox } from "@mui/material";
 
 import { EmailField, PasswordField } from "components/userFields";
-import SnackBar from "components/snackBar/SnackBar";
 import { LoginFormValidation } from "./userFormValidation";
 
-import { IUserLogin, RequestError } from "types/userTypes";
+import { IUserLogin } from "types/userTypes";
 import { useFetchLoginUserMutation } from "services/userServices";
 
 import "./styleForm.scss";
@@ -21,8 +21,7 @@ interface IUserData extends IUserLogin {
 const LoginForm: React.FC = () => {
 
     const navigate = useNavigate();
-    const [fetchLogin, { error, isLoading }] = useFetchLoginUserMutation();
-    const loginError = (error as RequestError)?.data.message;
+    const [fetchLogin, { isLoading }] = useFetchLoginUserMutation();
 
     const {
         control,
@@ -45,6 +44,9 @@ const LoginForm: React.FC = () => {
                 sessionStorage.setItem("rememberMe", token);
                 navigate("/");
                 reset();
+            })
+            .catch((error) => {
+                toast.error(error.data.message);
             })
     };
 
@@ -86,7 +88,6 @@ const LoginForm: React.FC = () => {
                         {isLoading ? 'Loading...' : 'Login'}
                     </Button>
                 </Box>
-                <SnackBar successMessage="" errorMessage={loginError} />
             </Paper>
             <Typography className="form subtitle">
                 {"Don't have account?"}

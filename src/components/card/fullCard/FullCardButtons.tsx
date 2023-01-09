@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 import { Button } from "@mui/material";
 
@@ -8,12 +9,10 @@ import { useFetchDeleteTaskMutation, useFetchUpdateTaskMutation } from "services
 
 interface IFullCardButtons {
     task: ITask;
-    successMessage: (arg0: string) => void;
-    errorMessage: (arg0: string) => void;
     closeModal: () => void;
 }
 
-const FullCardButtons: React.FC<IFullCardButtons> = ({ task, successMessage, errorMessage, closeModal }) => {
+const FullCardButtons: React.FC<IFullCardButtons> = ({ task, closeModal }) => {
     const { _id, completed } = task;
 
     const [updateTask, { isLoading }] = useFetchUpdateTaskMutation();
@@ -22,16 +21,14 @@ const FullCardButtons: React.FC<IFullCardButtons> = ({ task, successMessage, err
     const navigate = useNavigate();
 
     const handleDelete = async (id: string) => {
-        successMessage('');
-        errorMessage('');
         closeModal();
         await deleteTask({ _id: id })
             .unwrap()
             .then((res) => {
-                successMessage(res.message)
+                toast.success(res.message)
             })
             .catch((error: { data: { message: string } }) => {
-                errorMessage(error.data.message);
+                toast.error(error.data.message);
             })
     };
 
@@ -40,17 +37,15 @@ const FullCardButtons: React.FC<IFullCardButtons> = ({ task, successMessage, err
     };
 
     const handleComplete = async (data: ITask) => {
-        successMessage('');
-        errorMessage('');
         closeModal();
         const newData: ICompleteTask = { completed: !data.completed, _id: data._id, title: data?.title };
         await updateTask(newData)
             .unwrap()
             .then(res => {
-                successMessage(res.message)
+                toast.success(res.message)
             })
             .catch((error: { data: { message: string } }) => {
-                errorMessage(error.data.message);
+                toast.error(error.data.message);
             })
     };
 

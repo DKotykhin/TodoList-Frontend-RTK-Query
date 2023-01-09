@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
+import { toast } from 'react-toastify';
 
 import { Button } from "@mui/material";
 import { Box } from "@mui/system";
 
 import { PasswordField } from "components/userFields";
-import SnackBar from "components/snackBar/SnackBar";
 import { PasswordFormValidation } from "../userFormValidation";
 import { useFetchUserConfirmPasswordMutation } from "services/userServices";
 
@@ -21,8 +21,6 @@ interface IPasswordData {
 
 const ConfirmPassword: React.FC<IConfirmPassword> = ({ confirmStatus }) => {
 
-    const [error, setError] = useState('');
-
     const [confirmPassword, { isLoading }] = useFetchUserConfirmPasswordMutation()
 
     const {
@@ -31,8 +29,7 @@ const ConfirmPassword: React.FC<IConfirmPassword> = ({ confirmStatus }) => {
         formState: { errors, isValid },
     } = useForm<IPasswordData>(PasswordFormValidation);
 
-    const onSubmit = async (data: IPasswordData) => {
-        setError('');
+    const onSubmit = async (data: IPasswordData) => {       
         const { currentpassword } = data;
         await confirmPassword({ password: currentpassword })
             .unwrap()
@@ -41,12 +38,11 @@ const ConfirmPassword: React.FC<IConfirmPassword> = ({ confirmStatus }) => {
                 if (response.status) {
                     confirmStatus(response.status)
                 } else {
-                    setError(response.message);
+                    toast.error(response.message);
                 }
             })
-            .catch((error: { data: { message: string }}) => {
-                console.log(error.data.message);
-                setError(error.data.message);
+            .catch((error: { data: { message: string }}) => {                
+                toast.error(error.data.message);
             })
     }
 
@@ -71,8 +67,7 @@ const ConfirmPassword: React.FC<IConfirmPassword> = ({ confirmStatus }) => {
                 >
                     {isLoading ? 'Loading...' : "Confirm password"}
                 </Button>
-            </Box>
-            <SnackBar successMessage="" errorMessage={error} />
+            </Box>            
         </>
     )
 }

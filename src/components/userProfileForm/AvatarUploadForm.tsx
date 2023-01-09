@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { useForm, FieldValues } from "react-hook-form";
+import { toast } from 'react-toastify';
 
 import { Avatar, Box, Tooltip, IconButton } from '@mui/material';
 import CloseIcon from "@mui/icons-material/Close";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 
-import SnackBar from 'components/snackBar/SnackBar';
 import AvatarDeleteForm from './AvatarDeleteForm';
 
 import { useFetchUploadAvatarMutation } from "services/userServices";
+
 import { IUser } from 'types/userTypes';
 
 const checkFileType = (type: string): boolean => {
@@ -18,51 +19,44 @@ const Base_URL = process.env.REACT_APP_BACKEND_URL;
 
 const AvatarUploadForm: React.FC<{ user?: IUser }> = ({ user }) => {
 
-    const [loadSuccess, setLoadSuccess] = useState('');
-    const [loadError, setLoadError] = useState('');
     const [fileName, setFileName] = useState('');
     const { register, reset, handleSubmit } = useForm();
 
     const [loadAvatar, { isLoading }] = useFetchUploadAvatarMutation();
     const userAvatarURL = user?.avatarURL ? Base_URL + user.avatarURL : "/";
 
-    const onChange = (e: any) => {              
+    const onChange = (e: any) => {
         setFileName(e.target.files[0].name);
         const isApproved = checkFileType(e.target.files[0].type);
-        if (!isApproved) setLoadError("Incorrect file type");
-        if (e.target.files[0].size > 1024000) setLoadError("File shoul be less then 1Mb");
+        if (!isApproved) toast.warn("Incorrect file type");
+        if (e.target.files[0].size > 1024000) toast.warn("File shoul be less then 1Mb");
     };
-    const onReset = () => {        
+    const onReset = () => {
         reset();
         setFileName("");
-        setLoadError('');
     };
 
     const onSubmit = async (data: FieldValues) => {
-        setLoadError('');
-        setLoadSuccess('');
         const isApproved = checkFileType(data.avatar[0].type);
         if (!isApproved) {
-            setLoadError("Can't upload this type of file");
+            toast.error("Can't upload this type of file");
         } else if (data.avatar[0].size > 1024000) {
-            setLoadError("Too large file to upload!");
+            toast.error("Too large file to upload!");
         } else if (data.avatar.length) {
             const formData = new FormData();
             formData.append("avatar", data.avatar[0], data.avatar[0].name);
             await loadAvatar(formData)
                 .unwrap()
                 .then(response => {
-                    console.log(response.message);
-                    setLoadSuccess(response.message);
+                    toast.success(response.message);
                     setFileName("");
                     reset();
                 })
                 .catch((error) => {
-                    console.log(error.data.message);
-                    setLoadError(error.data.message);
+                    toast.error(error.data.message);
                 })
         } else {
-            setLoadError("No File in Avatar Field");
+            toast.warn("No File in Avatar Field");
         }
     }
 
@@ -101,8 +95,7 @@ const AvatarUploadForm: React.FC<{ user?: IUser }> = ({ user }) => {
                         </Tooltip>
                     </IconButton>
                 </>
-            ) : <AvatarDeleteForm user={user} />}            
-            <SnackBar successMessage={loadSuccess} errorMessage={loadError} />
+            ) : <AvatarDeleteForm user={user} />}
         </Box>
     )
 }

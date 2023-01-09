@@ -1,12 +1,11 @@
-import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { toast } from 'react-toastify';
 
 import { Button, Container, Typography, Avatar, Paper } from "@mui/material";
 import { Box } from "@mui/system";
 
 import { EmailField, NameField, PasswordField } from "components/userFields";
-import SnackBar from "components/snackBar/SnackBar";
 import { RegisterFormValidation } from "./userFormValidation";
 import { useFetchRegisterUserMutation } from "services/userServices";
 
@@ -15,7 +14,7 @@ import { IUserRegister } from "types/userTypes";
 import "./styleForm.scss";
 
 const RegisterForm = () => {
-    const [error, setError] = useState('');
+
     const navigate = useNavigate();
 
     const [registerUser, { isLoading }] = useFetchRegisterUserMutation();
@@ -37,8 +36,7 @@ const RegisterForm = () => {
                 reset();
             })
             .catch((error) => {
-                console.log(error.data.message);
-                setError(error.data.message);
+                toast.error(error.data.message);
             })
     };
 
@@ -76,7 +74,6 @@ const RegisterForm = () => {
                         {isLoading ? 'Loading...' : "Register"}
                     </Button>
                 </Box>
-                <SnackBar successMessage="" errorMessage={error} />
             </Paper>
             <Typography className="form subtitle">
                 {"Already have account?"}

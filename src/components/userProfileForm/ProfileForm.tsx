@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
+import { toast } from 'react-toastify';
 
 import { Button, Paper } from "@mui/material";
 import { Box } from "@mui/system";
@@ -8,18 +9,15 @@ import { Box } from "@mui/system";
 import { ProfileFormValidation } from "./ProfileFormValidation";
 import AvatarUploadForm from "./AvatarUploadForm";
 import { EmailField, NameField } from "components/userFields";
-import SnackBar from "components/snackBar/SnackBar";
 
 import { useFetchUpdateUserMutation } from "services/userServices";
 import { updateName } from "store/userSlice";
 
 import { IUser, IUserUpdate } from "types/userTypes";
 
-
 const ProfileForm: React.FC<{ user?: IUser }> = ({ user }) => {
-    const [updateError, setUpdateError] = useState('');
 
-    const [updateUser, { data: updateData, isLoading }] = useFetchUpdateUserMutation();
+    const [updateUser, { isLoading }] = useFetchUpdateUserMutation();
     const dispatch = useDispatch()
     const {
         control,
@@ -38,15 +36,14 @@ const ProfileForm: React.FC<{ user?: IUser }> = ({ user }) => {
             await updateUser({ name })
                 .unwrap()
                 .then(response => {
-                    console.log(response.message);
+                    toast.success(response.message);
                     dispatch(updateName(response.name))
                 })
                 .catch((error) => {
-                    console.log(error.data.message);
-                    setUpdateError(error.data.message);
+                    toast.error(error.data.message);
                 })
 
-        } else setUpdateError('The same name!');
+        } else toast.warn('The same name!');
     };
 
     return (
@@ -77,7 +74,6 @@ const ProfileForm: React.FC<{ user?: IUser }> = ({ user }) => {
                 >
                     {isLoading ? 'Loading...' : 'Save name'}
                 </Button>
-                <SnackBar successMessage={updateData?.message || ''} errorMessage={updateError} />
             </Box>
         </Paper>
     )
