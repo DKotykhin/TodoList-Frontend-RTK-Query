@@ -11,8 +11,10 @@ import SearchTask from 'components/searchTask/SearchTask';
 import PropTypes from "prop-types";
 import CardList from 'components/cardList/CardList';
 
-import './tabPanel.scss'
 import { useAppSelector } from 'store/hook';
+import { querySelector } from 'store/querySlice';
+
+import './tabPanel.scss'
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -55,7 +57,7 @@ function a11yProps(index: number) {
 
 const TabPanelComponent: React.FC = () => {
 
-    const { query: { tabKey } } = useAppSelector((state) => state.query);
+    const { query: { tabKey } } = useAppSelector(querySelector);
     const [tabIndex, setTabIndex] = useState(tabKey);
 
     const [showSearchPanel, setShowSearchPanel] = useState(false);

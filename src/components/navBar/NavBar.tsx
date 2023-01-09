@@ -8,6 +8,8 @@ import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import NavBarMenu from "./NavBarMenu";
 
 import { useAppSelector } from 'store/hook';
+import { userSelector } from "store/userSlice";
+
 import { IUser } from "types/userTypes";
 
 import "./navBar.scss";
@@ -17,7 +19,7 @@ const Base_URL = process.env.REACT_APP_BACKEND_URL;
 const NavBar: React.FC = () => {
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
-    const user: IUser = useAppSelector((state) => state.user);
+    const user: IUser = useAppSelector(userSelector);
     const userAvatarURL =
         user.avatarURL ? Base_URL + user.avatarURL : "/";
     const userName = user.name;

@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 
 import { useAppSelector } from "store/hook";
+import { querySelector } from "store/querySlice";
 
 import { IQueryData } from "types/taskTypes";
 
@@ -23,7 +24,7 @@ export const useFormQuery = ({
 }: IFormQuery): IQueryData => {
     const {
         query: { sortField, sortOrder },
-    } = useAppSelector((state) => state.query);
+    } = useAppSelector(querySelector);
     const [sortParams, setSortParams] = useState({ sortField, sortOrder });
 
     useEffect(() => {

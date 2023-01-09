@@ -1,4 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "./hook";
+
 import { IUserAvatarResponse } from "types/responseTypes";
 import { IUser } from "types/userTypes";
 
@@ -33,3 +35,5 @@ const { actions, reducer } = UserSlice;
 
 export default reducer;
 export const { setUserAvatar, updateAvatar, updateName, logout } = actions;
+
+export const userSelector = (state: RootState) => state.user;

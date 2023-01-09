@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { toast } from 'react-toastify';
 
 import { format } from "date-fns";
 
@@ -10,9 +11,11 @@ import { Box } from "@mui/system";
 import { UpdateTaskFormValidation } from "../taskFields/taskFormValidation";
 import SubmitCancelButtons from "./SubmitCancelButtons";
 import { TitleField, MDEField, SubtitleField, DeadlineField } from "../taskFields";
-import { useFetchUpdateTaskMutation, useFetchAllTasksQuery } from "services/taskServices";
 
+import { useFetchUpdateTaskMutation, useFetchAllTasksQuery } from "services/taskServices";
 import { useAppSelector } from 'store/hook';
+import { querySelector } from "store/querySlice";
+
 import { ITask, IUpdateTask } from "types/taskTypes";
 
 import "./task.scss";
@@ -30,7 +33,7 @@ const UpdateTaskComponent: React.FC = () => {
     const [mdeValue, setMdeValue] = useState("");;
     const navigate = useNavigate();
 
-    const { query } = useAppSelector((state) => state.query);
+    const { query } = useAppSelector(querySelector);
 
     const { data } = useFetchAllTasksQuery(query);
     const [updateTask, { isLoading }] = useFetchUpdateTaskMutation();
@@ -63,8 +66,7 @@ const UpdateTaskComponent: React.FC = () => {
             .unwrap()
             .then(() => navigate("/", { replace: true }))
             .catch((error: { data: { message: string } }) => {
-                console.log(error.data.message);
-                alert(error.data.message);
+                toast.error(error.data.message);
             })
     };
 
