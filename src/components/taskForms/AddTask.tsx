@@ -30,18 +30,20 @@ const AddTaskComponent: React.FC = () => {
     } = useForm<IAddTask>(AddTaskFormValidation);
 
     const onSubmit = async (data: IAddTask) => {
-        const { title, subtitle, deadline } = data;
-        const newDeadline: string = deadline ? new Date(deadline).toJSON() : ''
+        const { title, subtitle, deadline } = data;        
         const newData: IAddTask = {
             title,
             subtitle,
             description: mdeValue,
-            deadline: newDeadline,
+            ...(deadline && { deadline: new Date(deadline).toJSON() }),
             completed: false
         };
         await addTask(newData)
             .unwrap()
-            .then(() => navigate("/", { replace: true }))
+            .then((data) => {
+                toast.success(data.message)
+                navigate("/", { replace: true })
+            })
             .catch((error: { data: { message: string } }) => {
                 toast.error(error.data.message);
             })

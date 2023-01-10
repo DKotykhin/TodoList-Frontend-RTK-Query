@@ -53,18 +53,20 @@ const UpdateTaskComponent: React.FC = () => {
 
     const onSubmit = async (data: IUpdateForm) => {
         const { title, subtitle, deadline, completed } = data;
-        const newDeadline = deadline ? new Date(deadline).toJSON() : '';
         const totalData: IUpdateTask = {
             _id,
             title,
             subtitle,
             completed,
             description: mdeValue,
-            deadline: newDeadline,
+            ...(deadline && { deadline: new Date(deadline).toJSON() }),
         };
         await updateTask(totalData)
             .unwrap()
-            .then(() => navigate("/", { replace: true }))
+            .then((data) => {
+                toast.success(data.message)
+                navigate("/", { replace: true })
+            })
             .catch((error: { data: { message: string } }) => {
                 toast.error(error.data.message);
             })

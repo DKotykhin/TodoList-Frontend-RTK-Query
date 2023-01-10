@@ -23,6 +23,12 @@ export const fetchUser = createApi({
                 url: "/user/me",
                 headers: { Authorization: `Bearer ${getToken()}` },
             }),
+            async onQueryStarted(args, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    dispatch(setUserAvatar(data));
+                } catch (error) {}
+            },
             providesTags: ["User"],
         }),
         fetchRegisterUser: builder.mutation<IUserResponse, IUserRegister>({
@@ -34,12 +40,6 @@ export const fetchUser = createApi({
                 },
                 body: JSON.stringify(data),
             }),
-            async onQueryStarted(args, { dispatch, queryFulfilled }) {
-                try {
-                    const { data } = await queryFulfilled;
-                    dispatch(setUserAvatar(data));
-                } catch (error) {}
-            },
             invalidatesTags: ["User"],
         }),
         fetchLoginUser: builder.mutation<IUserResponse, IUserLogin>({
@@ -51,12 +51,6 @@ export const fetchUser = createApi({
                 },
                 body: JSON.stringify(data),
             }),
-            async onQueryStarted(args, { dispatch, queryFulfilled }) {
-                try {
-                    const { data } = await queryFulfilled;
-                    dispatch(setUserAvatar(data));
-                } catch (error) {}
-            },
             invalidatesTags: ["User"],
         }),
         fetchUpdateUser: builder.mutation<IUserResponse, IUserUpdate>({
