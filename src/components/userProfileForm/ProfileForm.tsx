@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { toast } from 'react-toastify';
 
@@ -11,14 +10,13 @@ import AvatarUploadForm from "./AvatarUploadForm";
 import { EmailField, NameField } from "components/userFields";
 
 import { useFetchUpdateUserMutation } from "services/userServices";
-import { updateName } from "store/userSlice";
 
 import { IUser, IUserUpdate } from "types/userTypes";
 
 const ProfileForm: React.FC<{ user?: IUser }> = ({ user }) => {
 
     const [updateUser, { isLoading }] = useFetchUpdateUserMutation();
-    const dispatch = useDispatch()
+
     const {
         control,
         reset,
@@ -37,7 +35,6 @@ const ProfileForm: React.FC<{ user?: IUser }> = ({ user }) => {
                 .unwrap()
                 .then(response => {
                     toast.success(response.message);
-                    dispatch(updateName(response.name))
                 })
                 .catch((error) => {
                     toast.error(error.data.message);

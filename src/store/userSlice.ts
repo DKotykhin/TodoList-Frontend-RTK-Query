@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./hook";
 
-import { IUserAvatarResponse } from "types/responseTypes";
 import { IUser } from "types/userTypes";
 
 const initialState: IUser = {
@@ -21,19 +20,12 @@ const UserSlice = createSlice({
             state.name = action.payload.name;
             state.avatarURL = action.payload.avatarURL;
         },
-        updateAvatar: (state, action: PayloadAction<IUserAvatarResponse>) => {            
-            state.avatarURL = action.payload.avatarURL;
-        },
-        updateName: (state, action: PayloadAction<string>) => {            
-            state.name = action.payload;
-
-        },
     },
 });
 
 const { actions, reducer } = UserSlice;
 
 export default reducer;
-export const { setUserAvatar, updateAvatar, updateName, logout } = actions;
+export const { setUserAvatar, logout } = actions;
 
 export const userSelector = (state: RootState) => state.user;
