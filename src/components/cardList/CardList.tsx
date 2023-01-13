@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Navigate } from "react-router-dom";
 
 import { Box, Container, Typography, Modal } from "@mui/material";
@@ -13,37 +13,48 @@ import { useFetchAllTasksQuery } from "services/taskServices";
 
 import { querySelector, setQuery } from "store/querySlice";
 import { useAppDispatch, useAppSelector } from "store/hook";
-import { useFormQuery } from 'hooks/useFormQuery';
 
 import "./cardList.scss";
+import { IQueryData } from 'types/taskTypes';
 
 interface ICardListNew {
     tabIndex: number;
     searchQuery: string;
     fieldData: string;
-    AZData: string;
+    AZData: number;
 }
 
 const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldData, AZData }) => {
 
     const { query: { limit, page } } = useAppSelector(querySelector);
 
-    const [totalTasks, setTotalTasks] = useState<string>(limit);
+    const [tasksOnPage, setTasksOnPage] = useState(limit);
     const [currentPageNumber, setCurrentPageNumber] = useState<number>(page);
-
-    const query = useFormQuery({
-        totalTasks,
-        currentPageNumber,
-        tabIndex,
-        searchQuery,
-        fieldData,
-        AZData
-    });
-
+    
     const [cardFullOpen, setCardFullOpen] = useState(false);
     const [cardFullId, setCardFullId] = useState("");
 
     const dispatch = useAppDispatch();
+
+    const query: IQueryData = useMemo(
+        () => ({
+            limit: tasksOnPage,
+            page: currentPageNumber,
+            tabKey: tabIndex,
+            sortField: fieldData,
+            sortOrder: AZData,
+            search: searchQuery,
+        }),
+        [
+            currentPageNumber,
+            searchQuery,
+            fieldData,
+            AZData,
+            tabIndex,
+            tasksOnPage,
+        ]
+    );
+
 
     const { data, isSuccess, isError, isFetching } = useFetchAllTasksQuery(query);
     const taskdata = data?.tasks ? data.tasks : [];
@@ -63,8 +74,8 @@ const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldData, AZ
         dispatch(setQuery({ query }));
     }, [dispatch, query]);
 
-    const handleTotalTasks = (data: string) => {
-        setTotalTasks(data);
+    const handleTasksOnPage = (data: number) => {
+        setTasksOnPage(data);
     };
 
     const handleCurrentPageNumber = (value: number) => {
@@ -102,7 +113,7 @@ const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldData, AZ
             </Box>
             <Box className="cardList taskAmountBox" >
                 <Typography className="cardList taskAmount" >tasks on page:</Typography>
-                <SelectTaskCount totalTasks={totalTasks} setTotalTasks={handleTotalTasks} />
+                <SelectTaskCount tasksOnPage={tasksOnPage} setTasksOnPage={handleTasksOnPage} />
             </Box>
             <Box>
                 {data?.totalPagesQty > 1 &&
