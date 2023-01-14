@@ -13,7 +13,7 @@ import SubmitCancelButtons from "./SubmitCancelButtons";
 import { TitleField, MDEField, SubtitleField, DeadlineField } from "../taskFields";
 
 import { useFetchUpdateTaskMutation, useFetchAllTasksQuery } from "services/taskServices";
-import { useAppSelector } from 'store/hook';
+import { useAppSelector } from 'store/reduxHooks';
 import { querySelector } from "store/querySlice";
 
 import { ITask, IUpdateTask } from "types/taskTypes";

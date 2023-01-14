@@ -12,7 +12,7 @@ import Spinner from 'components/spinner/Spinner';
 import { useFetchAllTasksQuery } from "services/taskServices";
 
 import { querySelector, setQuery } from "store/querySlice";
-import { useAppDispatch, useAppSelector } from "store/hook";
+import { useAppDispatch, useAppSelector } from "store/reduxHooks";
 
 import "./cardList.scss";
 import { IQueryData } from 'types/taskTypes';
@@ -20,17 +20,17 @@ import { IQueryData } from 'types/taskTypes';
 interface ICardListNew {
     tabIndex: number;
     searchQuery: string;
-    fieldData: string;
-    AZData: number;
+    fieldValue: string;
+    AZValue: number;
 }
 
-const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldData, AZData }) => {
+const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldValue, AZValue }) => {
 
     const { query: { limit, page } } = useAppSelector(querySelector);
 
     const [tasksOnPage, setTasksOnPage] = useState(limit);
     const [currentPageNumber, setCurrentPageNumber] = useState<number>(page);
-    
+
     const [cardFullOpen, setCardFullOpen] = useState(false);
     const [cardFullId, setCardFullId] = useState("");
 
@@ -41,15 +41,15 @@ const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldData, AZ
             limit: tasksOnPage,
             page: currentPageNumber,
             tabKey: tabIndex,
-            sortField: fieldData,
-            sortOrder: AZData,
+            sortField: fieldValue,
+            sortOrder: AZValue,
             search: searchQuery,
         }),
         [
             currentPageNumber,
             searchQuery,
-            fieldData,
-            AZData,
+            fieldValue,
+            AZValue,
             tabIndex,
             tasksOnPage,
         ]

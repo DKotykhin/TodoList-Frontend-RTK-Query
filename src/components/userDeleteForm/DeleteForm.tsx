@@ -9,7 +9,7 @@ import DeleteDialog from "./DeleteDialog";
 import { useFetchDeleteUserMutation } from "services/userServices";
 import { fetchUser } from "services/userServices";
 
-import { useAppDispatch } from "store/hook";
+import { useAppDispatch } from "store/reduxHooks";
 import { logout } from "store/userSlice";
 
 const DeleteForm: React.FC = () => {
