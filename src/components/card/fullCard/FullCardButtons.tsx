@@ -20,9 +20,9 @@ const FullCardButtons: React.FC<IFullCardButtons> = ({ task, closeModal }) => {
 
     const navigate = useNavigate();
 
-    const handleDelete = async (id: string) => {
+    const handleDelete = async (_id: string) => {
         closeModal();
-        await deleteTask({ _id: id })
+        await deleteTask({ _id })
             .unwrap()
             .then((res) => {
                 toast.success(res.message)

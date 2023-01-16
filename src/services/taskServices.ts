@@ -8,10 +8,9 @@ import {
     IUpdateTask,
 } from "types/taskTypes";
 import {
-    IAddTaskResponse,
+    ITaskResponse,
     ITaskDeleteResponse,
     IGetTasksResponse,
-    ITaskUpdateResponse,
 } from "types/responseTypes";
 
 const Base_URL = process.env.REACT_APP_BACKEND_URL;
@@ -37,7 +36,7 @@ export const fetchTask = createApi({
             providesTags: ["Task"],
         }),
 
-        fetchAddTask: builder.mutation<IAddTaskResponse, IAddTask>({
+        fetchAddTask: builder.mutation<ITaskResponse, IAddTask>({
             query: (data) => ({
                 method: "POST",
                 url: "/task",
@@ -51,7 +50,7 @@ export const fetchTask = createApi({
         }),
 
         fetchUpdateTask: builder.mutation<
-            ITaskUpdateResponse,
+            ITaskResponse,
             IUpdateTask | ICompleteTask
         >({
             query: (data) => ({

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import { toast } from 'react-toastify';
 
 import { Button, Paper } from "@mui/material";
@@ -9,13 +9,13 @@ import { ProfileFormValidation } from "./ProfileFormValidation";
 import AvatarUploadForm from "./AvatarUploadForm";
 import { EmailField, NameField } from "components/userFields";
 
-import { useFetchUpdateUserMutation } from "services/userServices";
+import { useFetchUpdateUserNameMutation } from "services/userServices";
 
-import { IUser, IUserUpdate } from "types/userTypes";
+import { IUser } from "types/userTypes";
 
 const ProfileForm: React.FC<{ user?: IUser }> = ({ user }) => {
 
-    const [updateUser, { isLoading }] = useFetchUpdateUserMutation();
+    const [updateUser, { isLoading }] = useFetchUpdateUserNameMutation();
 
     const {
         control,
@@ -28,7 +28,7 @@ const ProfileForm: React.FC<{ user?: IUser }> = ({ user }) => {
         reset({ name: user?.name, email: user?.email });
     }, [reset, user?.name, user?.email]);
 
-    const onSubmit = async (updateData: IUserUpdate) => {
+    const onSubmit = async (updateData: FieldValues) => {        
         const { name } = updateData;
         if (name !== user?.name) {
             await updateUser({ name })

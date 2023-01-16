@@ -7,8 +7,12 @@ export interface IUserRegister extends IUserLogin {
     name: string    
 }
 
-export interface IUserUpdate {    
-    [key: string]: string;    
+export interface IUserUpdateName {
+    name: string;    
+}
+
+export interface IUserUpdatePassword {
+    password: string;
 }
 
 export interface IUser {    
@@ -19,6 +23,3 @@ export interface IUser {
     avatarURL: string;    
 }
 
-export interface IuserWithToken extends IUser {
-    token: string
-}

@@ -7,7 +7,7 @@ import { Box } from "@mui/system";
 
 import { PasswordField } from "components/userFields";
 import { NewPasswordFormValidation } from "../userFormValidation";
-import { useFetchUpdateUserMutation } from "services/userServices";
+import { useFetchUpdateUserPasswordMutation } from "services/userServices";
 
 import "../styleForm.scss";
 
@@ -18,7 +18,7 @@ interface IPasswordData {
 
 const ChangePassword: React.FC = () => {
 
-    const [updatePassword, { isLoading }] = useFetchUpdateUserMutation();
+    const [updatePassword, { isLoading }] = useFetchUpdateUserPasswordMutation();
 
     const {
         control,

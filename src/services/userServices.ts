@@ -2,10 +2,11 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { getToken } from "./getToken";
 import { setUserAvatar } from "store/userSlice";
-import { IUserLogin, IUserRegister, IUserUpdate } from "types/userTypes";
+import { IUserLogin, IUserRegister, IUserUpdateName, IUserUpdatePassword } from "types/userTypes";
 import {
     IUserAvatarResponse,
     IUserConfirmPasswordResponse,
+    IUserUpdatePasswordResponse,
     IUserDeleteResponse,
     IUserResponse,
     IUserWithTokenResponse,
@@ -18,6 +19,7 @@ export const fetchUser = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: Base_URL }),
     tagTypes: ["User"],
     endpoints: (builder) => ({
+
         fetchUserByToken: builder.query<IUserResponse, void>({
             query: () => ({
                 url: "/user/me",
@@ -31,6 +33,7 @@ export const fetchUser = createApi({
             },
             providesTags: ["User"],
         }),
+
         fetchRegisterUser: builder.mutation<IUserWithTokenResponse, IUserRegister>({
             query: (data) => ({
                 url: "/user/register",
@@ -42,6 +45,7 @@ export const fetchUser = createApi({
             }),
             invalidatesTags: ["User"],
         }),
+
         fetchLoginUser: builder.mutation<IUserWithTokenResponse, IUserLogin>({
             query: (data) => ({
                 url: "/user/login",
@@ -53,10 +57,11 @@ export const fetchUser = createApi({
             }),
             invalidatesTags: ["User"],
         }),
-        fetchUpdateUser: builder.mutation<IUserResponse, IUserUpdate>({
+
+        fetchUpdateUserName: builder.mutation<IUserResponse, IUserUpdateName>({
             query: (data) => ({
                 method: "PATCH",
-                url: "/user/me",
+                url: "/user/name",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${getToken()}`,
@@ -65,6 +70,20 @@ export const fetchUser = createApi({
             }),
             invalidatesTags: ["User"],
         }),
+
+        fetchUpdateUserPassword: builder.mutation<IUserUpdatePasswordResponse, IUserUpdatePassword>({
+            query: (data) => ({
+                method: "PATCH",
+                url: "/user/password",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${getToken()}`,
+                },
+                body: JSON.stringify(data),
+            }),
+            invalidatesTags: ["User"],
+        }),
+
         fetchDeleteUser: builder.mutation<IUserDeleteResponse, void>({
             query: () => ({
                 method: "DELETE",
@@ -74,6 +93,7 @@ export const fetchUser = createApi({
                 },
             }),
         }),
+
         fetchUserConfirmPassword: builder.mutation<
             IUserConfirmPasswordResponse,
             { password: string }
@@ -88,6 +108,7 @@ export const fetchUser = createApi({
                 body: JSON.stringify(data),
             }),
         }),
+
         fetchUploadAvatar: builder.mutation<IUserAvatarResponse, FormData>({
             query: (data) => ({
                 method: "POST",
@@ -99,6 +120,7 @@ export const fetchUser = createApi({
             }),
             invalidatesTags: ["User"],
         }),
+
         fetchDeleteAvatar: builder.mutation<IUserAvatarResponse, void>({
             query: () => ({
                 method: "DELETE",
@@ -115,7 +137,8 @@ export const fetchUser = createApi({
 export const {
     useFetchUserByTokenQuery,
     useFetchLoginUserMutation,
-    useFetchUpdateUserMutation,
+    useFetchUpdateUserNameMutation,
+    useFetchUpdateUserPasswordMutation,
     useFetchDeleteAvatarMutation,
     useFetchDeleteUserMutation,
     useFetchRegisterUserMutation,
