@@ -10,7 +10,7 @@ import {
 import {
     IAddTaskResponse,
     ITaskDeleteResponse,
-    ITaskResponse,
+    IGetTasksResponse,
     ITaskUpdateResponse,
 } from "types/responseTypes";
 
@@ -21,7 +21,7 @@ export const fetchTask = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: Base_URL }),
     tagTypes: ["Task"],
     endpoints: (builder) => ({
-        fetchAllTasks: builder.query<ITaskResponse, IQueryData>({
+        fetchAllTasks: builder.query<IGetTasksResponse, IQueryData>({
             query: (data) => ({
                 url: "/task",
                 headers: { Authorization: `Bearer ${getToken()}` },

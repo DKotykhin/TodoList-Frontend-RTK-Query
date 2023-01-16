@@ -8,7 +8,7 @@ import {
     IUserConfirmPasswordResponse,
     IUserDeleteResponse,
     IUserResponse,
-    IUserWithoutTokenResponse,
+    IUserWithTokenResponse,
 } from "types/responseTypes";
 
 const Base_URL = process.env.REACT_APP_BACKEND_URL;
@@ -18,7 +18,7 @@ export const fetchUser = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: Base_URL }),
     tagTypes: ["User"],
     endpoints: (builder) => ({
-        fetchUserByToken: builder.query<IUserWithoutTokenResponse, void>({
+        fetchUserByToken: builder.query<IUserResponse, void>({
             query: () => ({
                 url: "/user/me",
                 headers: { Authorization: `Bearer ${getToken()}` },
@@ -31,7 +31,7 @@ export const fetchUser = createApi({
             },
             providesTags: ["User"],
         }),
-        fetchRegisterUser: builder.mutation<IUserResponse, IUserRegister>({
+        fetchRegisterUser: builder.mutation<IUserWithTokenResponse, IUserRegister>({
             query: (data) => ({
                 url: "/user/register",
                 method: "POST",
@@ -42,7 +42,7 @@ export const fetchUser = createApi({
             }),
             invalidatesTags: ["User"],
         }),
-        fetchLoginUser: builder.mutation<IUserResponse, IUserLogin>({
+        fetchLoginUser: builder.mutation<IUserWithTokenResponse, IUserLogin>({
             query: (data) => ({
                 url: "/user/login",
                 method: "POST",
