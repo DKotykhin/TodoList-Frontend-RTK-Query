@@ -1,11 +1,17 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { getToken } from "./getToken";
-import { IAddTask, ICompleteTask, IQueryData, IUpdateTask } from "types/taskTypes";
+import {
+    IAddTask,
+    ICompleteTask,
+    IQueryData,
+    IUpdateTask,
+} from "types/taskTypes";
 import {
     IAddTaskResponse,
+    ITaskDeleteResponse,
     ITaskResponse,
-    ITaskStatusResponse,
+    ITaskUpdateResponse,
 } from "types/responseTypes";
 
 const Base_URL = process.env.REACT_APP_BACKEND_URL;
@@ -25,11 +31,12 @@ export const fetchTask = createApi({
                     tabKey: data.tabKey,
                     sortField: data.sortField,
                     sortOrder: data.sortOrder,
-                    search: data.search
+                    search: data.search,
                 },
             }),
             providesTags: ["Task"],
         }),
+
         fetchAddTask: builder.mutation<IAddTaskResponse, IAddTask>({
             query: (data) => ({
                 method: "POST",
@@ -42,8 +49,9 @@ export const fetchTask = createApi({
             }),
             invalidatesTags: ["Task"],
         }),
+
         fetchUpdateTask: builder.mutation<
-            ITaskStatusResponse,
+            ITaskUpdateResponse,
             IUpdateTask | ICompleteTask
         >({
             query: (data) => ({
@@ -57,7 +65,8 @@ export const fetchTask = createApi({
             }),
             invalidatesTags: ["Task"],
         }),
-        fetchDeleteTask: builder.mutation<ITaskStatusResponse, { _id: string }>(
+
+        fetchDeleteTask: builder.mutation<ITaskDeleteResponse, { _id: string }>(
             {
                 query: (data) => ({
                     method: "DELETE",

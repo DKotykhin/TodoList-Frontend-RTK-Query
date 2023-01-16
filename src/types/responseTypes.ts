@@ -37,7 +37,19 @@ export interface IAddTaskResponse extends ITask {
     message: string;
 }
 
-export interface ITaskStatusResponse {
-    status: object;
+export interface ITaskUpdateResponse {
+    status: {
+        acknowledged: boolean;
+        matchedCount: number;
+        modifiedCount: number;
+    };
+    message: string;
+}
+
+export interface ITaskDeleteResponse {
+    status: {
+        acknowledged: boolean;
+        deletedCount: number;
+    };
     message: string;
 }
