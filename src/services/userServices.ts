@@ -36,7 +36,7 @@ export const fetchUser = createApi({
 
         fetchRegisterUser: builder.mutation<IUserWithTokenResponse, IUserRegister>({
             query: (data) => ({
-                url: "/user/register",
+                url: "/auth/register",
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -48,7 +48,7 @@ export const fetchUser = createApi({
 
         fetchLoginUser: builder.mutation<IUserWithTokenResponse, IUserLogin>({
             query: (data) => ({
-                url: "/user/login",
+                url: "/auth/login",
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
