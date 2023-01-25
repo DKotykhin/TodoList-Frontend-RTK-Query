@@ -112,7 +112,7 @@ export const fetchUser = createApi({
         fetchUploadAvatar: builder.mutation<IUserAvatarResponse, FormData>({
             query: (data) => ({
                 method: "POST",
-                url: "/upload",
+                url: "/avatar",
                 headers: {
                     Authorization: `Bearer ${getToken()}`,
                 },
@@ -124,7 +124,7 @@ export const fetchUser = createApi({
         fetchDeleteAvatar: builder.mutation<IUserAvatarResponse, void>({
             query: () => ({
                 method: "DELETE",
-                url: "/upload",
+                url: "/avatar",
                 headers: {
                     Authorization: `Bearer ${getToken()}`,
                 },
