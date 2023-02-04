@@ -10,12 +10,12 @@ import FullCard from 'components/card/fullCard/FullCard';
 import Spinner from 'components/spinner/Spinner';
 
 import { useFetchAllTasksQuery } from "services/taskServices";
-
 import { querySelector, setQuery } from "store/querySlice";
 import { useAppDispatch, useAppSelector } from "store/reduxHooks";
 
-import "./cardList.scss";
 import { IQueryData } from 'types/taskTypes';
+
+import styles from "./cardList.module.scss";
 
 interface ICardListNew {
     tabIndex: number;
@@ -94,25 +94,25 @@ const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldValue, A
     if (isFetching) return <Spinner />;
 
     return isSuccess ? (
-        <Container className="cardList" maxWidth="xl">
-            <Box className="cardList cardListBox">
+        <Container maxWidth="xl">
+            <Box className={styles.cardList__box}>
                 <Modal open={cardFullOpen} onClose={cardFullClose}>
-                    <Box sx={{ boxShadow: 24 }} className='cardList fullCard'>
+                    <Box className={styles.cardList__fullCard}>
                         <FullCard
                             task={fullCard}
                             closeModal={cardFullClose}
                         />
                     </Box>
                 </Modal>
-                <Typography className="cardList subtitle">
+                <Typography className={styles.cardList__subtitle}>
                     {data.totalTasksQty
                         ? `On page: ${data.tasksOnPageQty}, total: ${data.totalTasksQty}`
                         : "No cards"}
                 </Typography>
                 <ShortCardList taskdata={taskdata} handleOpenFullCard={handleOpenFullCard} />
             </Box>
-            <Box className="cardList taskAmountBox" >
-                <Typography className="cardList taskAmount" >tasks on page:</Typography>
+            <Box className={styles.cardList__taskAmountBox} >
+                <Typography className={styles.cardList__taskAmount} >tasks on page:</Typography>
                 <SelectTaskCount tasksOnPage={tasksOnPage} setTasksOnPage={handleTasksOnPage} />
             </Box>
             <Box>

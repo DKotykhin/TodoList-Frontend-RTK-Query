@@ -8,9 +8,9 @@ import { format } from "date-fns";
 import { Container, Typography, InputLabel, Checkbox } from "@mui/material";
 import { Box } from "@mui/system";
 
-import { UpdateTaskFormValidation } from "../taskFields/taskFormValidation";
-import SubmitCancelButtons from "./SubmitCancelButtons";
-import { TitleField, MDEField, SubtitleField, DeadlineField } from "../taskFields";
+import { UpdateTaskFormValidation } from "../validations/taskFormValidation";
+import { TitleField, MDEField, SubtitleField, DeadlineField } from "../fields/taskFields";
+import Buttons from "./buttons/Buttons";
 
 import { useFetchUpdateTaskMutation, useFetchAllTasksQuery } from "services/taskServices";
 import { useAppSelector } from 'store/reduxHooks';
@@ -18,7 +18,7 @@ import { querySelector } from "store/querySlice";
 
 import { ITask, IUpdateTask } from "types/taskTypes";
 
-import "./task.scss";
+import styles from "./task.module.scss";
 
 interface IUpdateForm {
     title: string;
@@ -77,8 +77,8 @@ const UpdateTaskComponent: React.FC = () => {
     }, []);
 
     return (
-        <Container className="task" maxWidth="sm">
-            <Typography className="task title">Update Task</Typography>
+        <Container className={styles.task} maxWidth="sm">
+            <Typography className={styles.task__title}>Update Task</Typography>
             <Box onSubmit={handleSubmit(onSubmit)} component="form">
 
                 <TitleField register={register} error={errors} value={title} />
@@ -86,14 +86,14 @@ const UpdateTaskComponent: React.FC = () => {
                 <MDEField MDEChange={MDEChange} description={description} />
                 <DeadlineField register={register} value={parseDeadline} />
 
-                <Box className="task checkbox">
+                <Box className={styles.task__checkbox}>
                     <Checkbox
                         {...register("completed")}
                         defaultChecked={completed}
                     />
                     <InputLabel sx={{ mt: 1 }}>Completed</InputLabel>
                 </Box>
-                <SubmitCancelButtons loading={isLoading} />
+                <Buttons loading={isLoading} />
             </Box>
         </Container>
     );

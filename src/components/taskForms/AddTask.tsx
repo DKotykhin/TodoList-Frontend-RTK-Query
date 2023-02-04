@@ -6,15 +6,15 @@ import { toast } from 'react-toastify';
 import { Box } from "@mui/system";
 import { Container, Typography } from "@mui/material";
 
-import SubmitCancelButtons from "./SubmitCancelButtons";
-import { TitleField, MDEField, SubtitleField, DeadlineField } from "../taskFields";
-import { AddTaskFormValidation } from "../taskFields/taskFormValidation";
+import { TitleField, MDEField, SubtitleField, DeadlineField } from "../fields/taskFields";
+import { AddTaskFormValidation } from "../validations/taskFormValidation";
+import Buttons from "./buttons/Buttons";
 
 import { useFetchAddTaskMutation } from "services/taskServices";
 
 import { IAddTask } from "types/taskTypes";
 
-import "./task.scss";
+import styles from "./task.module.scss";
 
 const AddTaskComponent: React.FC = () => {
 
@@ -54,8 +54,8 @@ const AddTaskComponent: React.FC = () => {
     }, []);
 
     return (
-        <Container className="task" maxWidth="sm">
-            <Typography className="task title">Add Task</Typography>
+        <Container className={styles.task} maxWidth="sm">
+            <Typography className={styles.task__title}>Add Task</Typography>
             <Box onSubmit={handleSubmit(onSubmit)} component="form">
 
                 <TitleField register={register} error={errors} value={''} />
@@ -63,7 +63,7 @@ const AddTaskComponent: React.FC = () => {
                 <MDEField MDEChange={MDEChange} />
                 <DeadlineField register={register} value={''} />
 
-                <SubmitCancelButtons loading={isLoading} />
+                <Buttons loading={isLoading} />
             </Box>
         </Container>
     );
