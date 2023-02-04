@@ -24,7 +24,7 @@ const NameField: React.FC<INameField> = ({ label, error, control }) => {
                     name="name"
                     control={control}
                     render={({ field }) => (
-                        <Input sx={{ width: '320px' }}
+                        <Input sx={{ width: '300px' }}
                             {...field}
                             type="text"
                             placeholder="type name..."

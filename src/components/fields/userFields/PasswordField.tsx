@@ -41,7 +41,7 @@ const PasswordField: React.FC<IPasswordField> = (props) => {
                     name={name.toLowerCase().split(' ').join('')}
                     control={control}
                     render={({ field }) => (
-                        <Input sx={{ width: '320px' }}
+                        <Input sx={{ width: '300px' }}
                             {...field}
                             placeholder="type password..."
                             type={showPassword ? "text" : "password"}

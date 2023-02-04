@@ -24,7 +24,7 @@ const EmailField: React.FC<IEmailField> = ({ disabled, error, control }) => {
                     name="email"
                     control={control}
                     render={({ field }) => (
-                        <Input sx={{ width: '320px' }}
+                        <Input sx={{ width: '300px' }}
                             {...field}
                             type="email"                            
                             disabled={disabled}
