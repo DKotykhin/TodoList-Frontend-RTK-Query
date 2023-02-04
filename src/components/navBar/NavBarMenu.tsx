@@ -6,7 +6,9 @@ import { fetchUser } from "services/userServices";
 import { useAppDispatch } from "store/reduxHooks";
 import { logout } from "store/userSlice";
 
-const settings = ["Profile", "Change password", "Logout"];
+import styles from "./navBar.module.scss";
+
+const menu = ["Profile", "Change password", "Logout"];
 
 const NavBarMenu = () => {    
     const navigate = useNavigate();
@@ -14,13 +16,13 @@ const NavBarMenu = () => {
 
     const handleSettingMenu = (event: string): void => {
         switch (event) {
-            case "Profile":                
+            case menu[0]:                
                 navigate("/profile");
                 break;
-            case "Change password":
+            case menu[1]:
                 navigate("/password");
                 break;
-            case "Logout":
+            case menu[2]:
                 dispatch(fetchUser.util.resetApiState());
                 dispatch(logout());
                 sessionStorage.removeItem("rememberMe");
@@ -34,21 +36,17 @@ const NavBarMenu = () => {
 
     return (
         <>
-            {settings.map((setting) => (
+            {menu.map((item) => (
                 <Typography
-                    key={setting}
-                    sx={{
-                        padding: "5px 15px",
-                        cursor: "pointer",
-                        color: "#808080",
-                        ":hover": { color: "#2b2b2b" },
-                    }}
-                    onClick={() => handleSettingMenu(setting)}
+                    key={item}
+                    className={styles.navbar__menu}
+                    onClick={() => handleSettingMenu(item)}
                 >
-                    {setting}
+                    {item}
                 </Typography>
             ))}
         </>
     );
 };
+
 export default NavBarMenu;
