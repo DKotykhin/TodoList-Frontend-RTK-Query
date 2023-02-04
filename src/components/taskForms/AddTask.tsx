@@ -30,7 +30,7 @@ const AddTaskComponent: React.FC = () => {
     } = useForm<IAddTask>(AddTaskFormValidation);
 
     const onSubmit = async (data: IAddTask) => {
-        const { title, subtitle, deadline } = data;        
+        const { title, subtitle, deadline } = data;
         const newData: IAddTask = {
             title,
             subtitle,
@@ -60,7 +60,7 @@ const AddTaskComponent: React.FC = () => {
 
                 <TitleField register={register} error={errors} value={''} />
                 <SubtitleField register={register} value={''} />
-                <MDEField MDEChange={MDEChange} />
+                <MDEField MDEChange={MDEChange} autofocus={false} />
                 <DeadlineField register={register} value={''} />
 
                 <Buttons loading={isLoading} />

@@ -7,16 +7,17 @@ import "easymde/dist/easymde.min.css";
 interface IMDEField {
     description?: string;
     MDEChange: (arg0: string) => void;
+    autofocus: boolean;
 }
 
-const MDEField: React.FC<IMDEField> = ({ description, MDEChange }) => {
+const MDEField: React.FC<IMDEField> = ({ description, MDEChange, autofocus }) => {
 
     const options: EasyMDE.Options = useMemo(
         () => ({
-            spellChecker: false,
+            spellChecker: true,
             hideIcons: ["preview", "side-by-side", "quote"],
             maxHeight: "200px",
-            // autofocus: true,
+            autofocus,
             placeholder: "type text...",
             status: false,
             autosave: {
@@ -25,7 +26,7 @@ const MDEField: React.FC<IMDEField> = ({ description, MDEChange }) => {
                 uniqueId: "MyUniqueID",
             },
         }),
-        []
+        [autofocus]
     );
     return (
         <Paper>

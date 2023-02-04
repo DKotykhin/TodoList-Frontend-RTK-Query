@@ -83,7 +83,7 @@ const UpdateTaskComponent: React.FC = () => {
 
                 <TitleField register={register} error={errors} value={title} />
                 <SubtitleField register={register} value={subtitle} />
-                <MDEField MDEChange={MDEChange} description={description} />
+                <MDEField MDEChange={MDEChange} description={description} autofocus={true} />
                 <DeadlineField register={register} value={parseDeadline} />
 
                 <Box className={styles.task__checkbox}>
