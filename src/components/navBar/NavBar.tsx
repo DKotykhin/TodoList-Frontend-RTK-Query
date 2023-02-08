@@ -46,7 +46,7 @@ const NavBar: React.FC = () => {
                     </Typography>
                     {userName &&
                         <>
-                            <Typography sx={{ mr: 3 }}>{userName}</Typography>
+                            <Typography className={styles.navbar__name}>{userName}</Typography>
                             <Box>
                                 <Tooltip title="Open settings" arrow>
                                     <IconButton
@@ -75,10 +75,7 @@ const NavBar: React.FC = () => {
                                     open={Boolean(anchorElUser)}
                                     onClose={handleCloseUserMenu}
                                 >
-                                    <Box
-                                        sx={{ display: "block" }}
-                                        onClick={handleCloseUserMenu}
-                                    >
+                                    <Box onClick={handleCloseUserMenu}>
                                         <NavBarMenu />
                                     </Box>
                                 </Menu>
