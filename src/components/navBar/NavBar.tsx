@@ -3,13 +3,13 @@ import { Link as RouterLink } from "react-router-dom";
 
 import { AppBar, Toolbar, IconButton, Typography, Menu, Container, Avatar, Tooltip } from "@mui/material";
 import { Box } from "@mui/system";
-import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 
 import NavBarMenu from "./NavBarMenu";
 
 import { useAppSelector } from 'store/reduxHooks';
 import { userSelector } from "store/userSlice";
 
+import { ReactComponent as Icon } from "images/svg/logo.svg";
 import { IUser } from "types/userTypes";
 
 import styles from "./navBar.module.scss";
@@ -36,7 +36,7 @@ const NavBar: React.FC = () => {
         <AppBar position="static">
             <Container maxWidth="xl" className={styles.navbar}>
                 <Toolbar disableGutters>
-                    <AssignmentTurnedInIcon sx={{ mr: 1 }} />
+                    <Icon className={styles.navbar__icon} />
                     <Typography
                         component={RouterLink}
                         to={userName ? "/" : "/login"}
