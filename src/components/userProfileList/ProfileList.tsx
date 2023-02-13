@@ -18,7 +18,7 @@ const ProfileList: React.FC = () => {
 
     return (
         <Container maxWidth="xs" className={styles.profile}>
-            <Paper elevation={10}>
+            <Paper elevation={10} className={styles.profile__paper}>
                 <Typography className={styles.profile__title} component="h2">
                     {data?.name}
                 </Typography>

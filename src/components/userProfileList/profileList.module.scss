@@ -2,18 +2,17 @@
 
 .profile {
     text-align: center;
-    .profile__title {
-        font-size: 25px;
+    .profile__paper {
         margin-top: 30px;
-        margin-bottom: 30px;
-        padding-top: 10px;
-        font-weight: 600;        
+        .profile__title {
+            font-size: 25px;            
+            font-weight: 600;
+            padding: 10px 0 25px 0;        
+        }
     }
     label {
         color: $color_grey;
         text-align: left;
-        margin-left: 40px;
-        margin-top: 10px;
-        margin-bottom: 5px;
+        margin: 10px 0 5px 45px;        
     }
 }
