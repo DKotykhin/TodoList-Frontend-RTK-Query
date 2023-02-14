@@ -6,6 +6,7 @@ import { Button, Typography, Container, Paper } from "@mui/material";
 
 import DeleteForm from "./deleteForm/DeleteForm";
 import ProfileForm from "./profileForm/ProfileForm";
+import UserStatistic from "./userStatistic/UserStatistic";
 
 import { useFetchUserByTokenQuery } from "services/userServices";
 
@@ -29,6 +30,7 @@ const ProfileList: React.FC = () => {
                     )}`}
                 </Typography>
             </Paper>
+            <UserStatistic/>
             <ProfileForm user={data} />
             <DeleteForm />
             <Button className={styles.profile__link} onClick={() => navigate("/")}>

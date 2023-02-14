@@ -10,6 +10,7 @@ import {
     IUserDeleteResponse,
     IUserResponse,
     IUserWithTokenResponse,
+    ITaskStatisticResponse,
 } from "types/responseTypes";
 
 const Base_URL = process.env.REACT_APP_BACKEND_URL;
@@ -131,6 +132,16 @@ export const fetchUser = createApi({
             }),
             invalidatesTags: ["User"],
         }),
+
+        fetchGetStatistic: builder.query<ITaskStatisticResponse, void>({
+            query: () => ({
+                method: "GET",
+                url: "/user/statistic",
+                headers: {
+                    Authorization: `Bearer ${getToken()}`,
+                },
+            }),            
+        }),
     }),
 });
 
@@ -144,4 +155,5 @@ export const {
     useFetchRegisterUserMutation,
     useFetchUploadAvatarMutation,
     useFetchUserConfirmPasswordMutation,
+    useFetchGetStatisticQuery,
 } = fetchUser;
