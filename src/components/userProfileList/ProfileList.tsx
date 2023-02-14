@@ -31,7 +31,7 @@ const ProfileList: React.FC = () => {
             </Paper>
             <ProfileForm user={data} />
             <DeleteForm />
-            <Button sx={{ m: 6 }} onClick={() => navigate("/")}>
+            <Button className={styles.profile__link} onClick={() => navigate("/")}>
                 Main Page
             </Button>
         </Container>

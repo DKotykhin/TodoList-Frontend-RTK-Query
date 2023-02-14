@@ -13,6 +13,8 @@ import { useFetchUpdateUserNameMutation } from "services/userServices";
 
 import { IUser } from "types/userTypes";
 
+import styles from "../profileList.module.scss";
+
 const ProfileForm: React.FC<{ user?: IUser }> = ({ user }) => {
 
     const [updateUser, { isLoading }] = useFetchUpdateUserNameMutation();
@@ -28,7 +30,7 @@ const ProfileForm: React.FC<{ user?: IUser }> = ({ user }) => {
         reset({ name: user?.name, email: user?.email });
     }, [reset, user?.name, user?.email]);
 
-    const onSubmit = async (updateData: FieldValues) => {        
+    const onSubmit = async (updateData: FieldValues) => {
         const { name } = updateData;
         if (name !== user?.name) {
             await updateUser({ name })
@@ -44,9 +46,10 @@ const ProfileForm: React.FC<{ user?: IUser }> = ({ user }) => {
     };
 
     return (
-        <Paper elevation={10} sx={{ my: 2 }}>
+        <Paper elevation={10} sx={{ my: 2, pb: 1 }}>
             <AvatarUploadForm user={user} />
             <Box
+                className={styles.profile__field}
                 onSubmit={handleSubmit(onSubmit)}
                 component="form"
                 noValidate
@@ -64,11 +67,7 @@ const ProfileForm: React.FC<{ user?: IUser }> = ({ user }) => {
                         control={control}
                     />
                 </Box>
-                <Button
-                    type="submit"
-                    variant="outlined"
-                    sx={{ m: 3 }}
-                >
+                <Button type="submit">
                     {isLoading ? 'Loading...' : 'Save name'}
                 </Button>
             </Box>
