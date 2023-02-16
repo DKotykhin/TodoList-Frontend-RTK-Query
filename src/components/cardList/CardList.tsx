@@ -95,34 +95,32 @@ const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldValue, A
 
     return isSuccess ? (
         <Container maxWidth="xl" className={styles.cardList}>
+            <Modal open={cardFullOpen} onClose={cardFullClose}>
+                <>
+                    <FullCard
+                        task={fullCard}
+                        closeModal={cardFullClose}
+                    />
+                </>
+            </Modal>
+            <Typography className={styles.cardList__subtitle}>
+                {data.totalTasksQty
+                    ? `On page: ${data.tasksOnPageQty}, total: ${data.totalTasksQty}`
+                    : "No cards"}
+            </Typography>
             <Box className={styles.cardList__box}>
-                <Modal open={cardFullOpen} onClose={cardFullClose}>
-                    <>
-                        <FullCard
-                            task={fullCard}
-                            closeModal={cardFullClose}
-                        />
-                    </>
-                </Modal>
-                <Typography className={styles.cardList__subtitle}>
-                    {data.totalTasksQty
-                        ? `On page: ${data.tasksOnPageQty}, total: ${data.totalTasksQty}`
-                        : "No cards"}
-                </Typography>
                 <ShortCardList taskdata={taskdata} handleOpenFullCard={handleOpenFullCard} />
             </Box>
             <Box className={styles.cardList__taskAmountBox} >
                 <Typography className={styles.cardList__taskAmount} >tasks on page:</Typography>
                 <SelectTaskCount tasksOnPage={tasksOnPage} setTasksOnPage={handleTasksOnPage} />
             </Box>
-            <Box>
-                {data?.totalPagesQty > 1 &&
-                    <PaginationControlled
-                        totalPagesQty={data?.totalPagesQty}
-                        currentPage={handleCurrentPageNumber}
-                        currentPageNumber={currentPageNumber} />
-                }
-            </Box>
+            {data?.totalPagesQty > 1 &&
+                <PaginationControlled
+                    totalPagesQty={data?.totalPagesQty}
+                    currentPage={handleCurrentPageNumber}
+                    currentPageNumber={currentPageNumber} />
+            }
         </Container>
     ) : isError ? <Navigate to='/login' /> : <Spinner />
 }
