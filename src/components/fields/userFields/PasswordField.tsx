@@ -14,6 +14,8 @@ import {
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
+import styles from './field.module.scss';
+
 interface IPasswordField {
     name: string;
     error: FieldError | undefined;
@@ -32,16 +34,16 @@ const PasswordField: React.FC<IPasswordField> = (props) => {
     };
 
     return (
-        <Box>
+        <Box className={styles.field}>
             <InputLabel>
                 {name}
             </InputLabel>
-            <FormControl sx={{ width: "300px" }}>
+            <FormControl sx={{ width: '300px' }}>
                 <Controller
                     name={name.toLowerCase().split(' ').join('')}
                     control={control}
                     render={({ field }) => (
-                        <Input sx={{ width: '300px' }}
+                        <Input
                             {...field}
                             placeholder="type password..."
                             type={showPassword ? "text" : "password"}
