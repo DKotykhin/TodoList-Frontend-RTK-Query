@@ -59,13 +59,11 @@ const ProfileForm: React.FC<{ user?: IUser }> = ({ user }) => {
                     error={errors.email}
                     control={control}
                 />
-                <Box sx={{ my: 4 }}>
-                    <NameField
-                        label="Change your name"
-                        error={errors.name}
-                        control={control}
-                    />
-                </Box>
+                <NameField
+                    label="Change your name"
+                    error={errors.name}
+                    control={control}
+                />
                 <Button type="submit" className={styles.profileForm__submit_button}>
                     {isLoading ? 'Loading...' : 'Save name'}
                 </Button>
