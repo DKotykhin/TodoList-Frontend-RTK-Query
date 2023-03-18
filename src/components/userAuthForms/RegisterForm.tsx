@@ -30,7 +30,7 @@ const RegisterForm = () => {
         await registerUser(registerData)
             .unwrap()
             .then(response => {
-                console.log(response.message);
+                // console.log(response.message);
                 sessionStorage.setItem("rememberMe", response.token);
                 navigate("/");
                 reset();
@@ -43,10 +43,10 @@ const RegisterForm = () => {
     return (
         <Container maxWidth="xs" className={styles.form}>
             <Paper elevation={10} className={styles.form__paper}>
-                <Typography className={styles.paper__title} component="h2">
+                <Typography className={styles.form__title} component="h2">
                     {"Registration"}
                 </Typography>
-                <Avatar className={styles.paper__avatar} />
+                <Avatar className={styles.form__avatar} />
                 <Box
                     component="form"
                     onSubmit={handleSubmit(onSubmit)}
