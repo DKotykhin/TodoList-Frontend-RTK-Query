@@ -7,7 +7,6 @@ export interface IUserResponse extends IUser {
 
 export interface IUserWithTokenResponse extends IUserResponse {
     token: string;
-    message: string;
 }
 
 export interface IUserConfirmPasswordResponse {

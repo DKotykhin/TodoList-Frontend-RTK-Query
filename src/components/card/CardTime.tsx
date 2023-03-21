@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 
-import { format, formatDistanceToNow } from "date-fns";
+import { format, formatDistanceToNow, getTime } from "date-fns";
 
 import { Box, Typography } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -18,13 +18,12 @@ const CardTime: React.FC<ICardTime> = ({ task }) => {
     const [overdue, setOverdue] = useState(false);
 
     useMemo(() => {
-        if (deadline) {
+        if (deadline) {            
             const result = formatDistanceToNow(new Date(deadline), {
                 addSuffix: true,
             });
-            setDaysLeft(result);
-            const newDate: string = new Date().toISOString();
-            const isOverdue: number = Date.parse(deadline) - Date.parse(newDate);
+            setDaysLeft(result);            
+            const isOverdue: number = getTime(new Date(deadline)) - getTime(new Date());
             if (isOverdue < 0) setOverdue(true);
         }
     }, [deadline]);
