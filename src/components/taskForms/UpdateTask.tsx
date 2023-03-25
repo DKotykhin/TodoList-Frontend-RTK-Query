@@ -48,10 +48,7 @@ const UpdateTaskComponent: React.FC = () => {
 
     useEffect(() => {
         const currentTask = data?.tasks.filter((task: ITask) => task._id === params.taskId);
-        if (currentTask?.length) {
-            setSingleTask(currentTask[0])
-        } else navigate('/');
-
+        if (currentTask?.length) setSingleTask(currentTask[0]);
     }, [data?.tasks, navigate, params.taskId]);
 
     const onSubmit = async (data: IUpdateForm) => {
