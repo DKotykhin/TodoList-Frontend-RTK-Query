@@ -55,24 +55,23 @@ const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldValue, A
         ]
     );
 
-
     const { data, isSuccess, isError, isFetching } = useFetchAllTasksQuery(query);
     const taskdata = data?.tasks ? data.tasks : [];
     const fullCard = taskdata.filter((task) => task._id === cardFullId)[0];
 
     useEffect(() => {
-        if (data?.tasksOnPageQty === 0) {
+        dispatch(setQuery({ query }));
+    }, [dispatch, query]);
+
+    useEffect(() => {
+        if (Boolean(data?.totalTasksQty && (data?.tasksOnPageQty === 0))) {
             setCurrentPageNumber(prev => prev - 1);
         }
-    }, [data?.tasksOnPageQty]);
+    }, [data?.tasksOnPageQty, data?.totalTasksQty]);
 
     useEffect(() => {
         setCurrentPageNumber(1);
     }, [tabIndex]);
-
-    useEffect(() => {
-        dispatch(setQuery({ query }));
-    }, [dispatch, query]);
 
     const handleTasksOnPage = (data: number) => {
         setTasksOnPage(data);
