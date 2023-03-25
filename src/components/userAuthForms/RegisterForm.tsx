@@ -27,7 +27,13 @@ const RegisterForm = () => {
     } = useForm<IUserRegister>(RegisterFormValidation);
 
     const onSubmit = async (registerData: IUserRegister) => {
-        await registerUser(registerData)
+        const { name, email, password } = registerData;
+        const validData = {
+            name: name.trim(),
+            email: email.trim(),
+            password: password.trim(),
+        };
+        await registerUser(validData)
             .unwrap()
             .then(response => {
                 // console.log(response.message);

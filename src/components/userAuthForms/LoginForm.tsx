@@ -33,7 +33,11 @@ const LoginForm: React.FC = () => {
 
     const onSubmit = async (formdata: IUserData): Promise<void> => {
         const { email, password } = formdata;
-        await fetchLogin({ email, password })
+        const validData = {
+            email: email.trim(),
+            password: password.trim(),
+        };
+        await fetchLogin(validData)
             .unwrap()
             .then(response => {
                 // console.log(response.message);
