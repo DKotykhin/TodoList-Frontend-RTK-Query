@@ -13,7 +13,7 @@ import { useFetchAllTasksQuery } from "services/taskServices";
 import { querySelector, setQuery } from "store/querySlice";
 import { useAppDispatch, useAppSelector } from "store/reduxHooks";
 
-import { IQueryData } from 'types/taskTypes';
+import { IQueryData, ITask } from 'types/taskTypes';
 
 import styles from "./cardList.module.scss";
 
@@ -32,7 +32,7 @@ const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldValue, A
     const [currentPageNumber, setCurrentPageNumber] = useState<number>(page);
 
     const [cardFullOpen, setCardFullOpen] = useState(false);
-    const [cardFullId, setCardFullId] = useState("");
+    const [cardFullId, setCardFullId] = useState<ITask>();
 
     const dispatch = useAppDispatch();
 
@@ -56,8 +56,6 @@ const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldValue, A
     );
 
     const { data, isSuccess, isError, isFetching } = useFetchAllTasksQuery(query);
-    const taskdata = data?.tasks ? data.tasks : [];
-    const fullCard = taskdata.filter((task) => task._id === cardFullId)[0];
 
     useEffect(() => {
         dispatch(setQuery({ query }));
@@ -81,9 +79,10 @@ const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldValue, A
         setCurrentPageNumber(value);
     };
 
-    const handleOpenFullCard = (data: string): void => {
+    const handleOpenFullCard = (id: string): void => {
+        const fullCard = data?.tasks.find((task) => task._id === id);
         setCardFullOpen(true);
-        setCardFullId(data);
+        setCardFullId(fullCard);
     };
 
     const cardFullClose = (): void => {
@@ -97,7 +96,7 @@ const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldValue, A
             <Modal open={cardFullOpen} onClose={cardFullClose}>
                 <>
                     <FullCard
-                        task={fullCard}
+                        task={cardFullId}
                         closeModal={cardFullClose}
                     />
                 </>
@@ -108,7 +107,7 @@ const CardList: React.FC<ICardListNew> = ({ tabIndex, searchQuery, fieldValue, A
                     : "No cards"}
             </Typography>
             <Box className={styles.cardList__box}>
-                <ShortCardList taskdata={taskdata} handleOpenFullCard={handleOpenFullCard} />
+                <ShortCardList taskdata={data?.tasks} handleOpenFullCard={handleOpenFullCard} />
             </Box>
             <Box className={styles.cardList__taskAmountBox} >
                 <Typography className={styles.cardList__taskAmount} >tasks on page:</Typography>

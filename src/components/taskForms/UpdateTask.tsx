@@ -32,7 +32,7 @@ const UpdateTaskComponent: React.FC = () => {
     const [mdeValue, setMdeValue] = useState("");
     const [singleTask, setSingleTask] = useState<ITask>();
 
-    const params = useParams();;
+    const { taskId } = useParams();
     const navigate = useNavigate();
 
     const { query } = useAppSelector(querySelector);
@@ -47,9 +47,9 @@ const UpdateTaskComponent: React.FC = () => {
     } = useForm<IUpdateForm>(UpdateTaskFormValidation);
 
     useEffect(() => {
-        const currentTask = data?.tasks.filter((task: ITask) => task._id === params.taskId);
+        const currentTask = data?.tasks.filter((task: ITask) => task._id === taskId);
         if (currentTask?.length) setSingleTask(currentTask[0]);
-    }, [data?.tasks, navigate, params.taskId]);
+    }, [data?.tasks, navigate, taskId]);
 
     const onSubmit = async (data: IUpdateForm) => {
         const { title, subtitle, deadline, completed } = data;
