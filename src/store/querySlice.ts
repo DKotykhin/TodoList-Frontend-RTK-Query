@@ -9,9 +9,9 @@ const initialState: IQuerySlise = {
     query: {
         limit: 6,
         page: 1,
-        tabKey: 1,
+        tabKey: 0,
         sortField: 'createdAt',
-        sortOrder: -1,
+        sortOrder: 1,
         search: ''
     }
 };
