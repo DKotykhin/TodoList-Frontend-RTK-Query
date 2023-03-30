@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 
 import { Typography, Paper } from "@mui/material";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
-import DeleteDialog from "../deleteDialog/DeleteDialog";
+import ChildModal from "components/childModal/ChildModal";
 
 import { useFetchDeleteUserMutation } from "services/userServices";
 import { fetchUser } from "services/userServices";
@@ -16,12 +17,15 @@ import styles from "./deleteForm.module.scss";
 
 const DeleteForm: React.FC = () => {
 
+    const [openChildModal, setOpenChildModal] = useState(false);
+
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const [deleteUser, { isLoading }] = useFetchDeleteUserMutation();
 
-    const handleDelete = async () => {      
+    const handleSubmit = async () => {
+        setOpenChildModal(false);
         await deleteUser()
             .unwrap()
             .then(response => {
@@ -32,19 +36,29 @@ const DeleteForm: React.FC = () => {
                 localStorage.removeItem("rememberMe");
                 navigate("/login");
             })
-            .catch((error) => {                
+            .catch((error) => {
                 toast.error(error.data.message);
             })
+    };
+
+    const handleClick = (): void => {
+        setOpenChildModal(true);
+    };
+    const handleClose = (): void => {
+        setOpenChildModal(false);
     };
 
     return (
         <Paper elevation={10} className={styles.deleteForm}>
             <Typography className={styles.deleteForm__title}>
                 {isLoading ? 'Deleting...' : 'Need to delete Profile?'}
-            </Typography>            
-            <DeleteDialog
-                dialogTitle={"You really want to delete user?"}
-                deleteAction={handleDelete}
+            </Typography>
+            <DeleteForeverIcon onClick={handleClick} className={styles.deleteForm__icon} />
+            <ChildModal
+                open={openChildModal}
+                handleClose={handleClose}
+                handleSubmit={handleSubmit}
+                title={'user'}
             />
         </Paper>
     )

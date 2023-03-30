@@ -1,18 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
-import DeleteDialog from "../deleteDialog/DeleteDialog";
+import Typography from '@mui/material/Typography';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+
+import ChildModal from "components/childModal/ChildModal";
 
 import { useFetchDeleteAvatarMutation } from "services/userServices";
 
-import { IUser } from 'types/userTypes';
+import styles from './avatarForm.module.scss';
 
-const AvatarDeleteForm: React.FC<{ user?: IUser }> = ({ user }) => {
+const AvatarDeleteForm: React.FC<{ avatarURL?: string }> = ({ avatarURL }) => {
 
-    const [deleteAvatar] = useFetchDeleteAvatarMutation();
+    const [openChildModal, setOpenChildModal] = useState(false);
 
-    const handleDelete = async () => {
-        const avatarURL: string | undefined = user?.avatarURL;
+    const [deleteAvatar, { isLoading }] = useFetchDeleteAvatarMutation();
+
+    const handleSubmit = async () => {
+        setOpenChildModal(false);
         if (avatarURL) {
             await deleteAvatar()
                 .unwrap()
@@ -25,13 +30,28 @@ const AvatarDeleteForm: React.FC<{ user?: IUser }> = ({ user }) => {
         } else {
             toast.warn("Avatar doesn't exist");
         }
-    }
+    };
+
+    const handleClick = (): void => {
+        setOpenChildModal(true);
+    };
+    const handleClose = (): void => {
+        setOpenChildModal(false);
+    };
 
     return (
         <>
-            <DeleteDialog
-                dialogTitle={"You really want to delete avatar?"}
-                deleteAction={handleDelete}
+            {isLoading ?
+                <Typography className={styles.avatarForm__loading}>
+                    Loading...
+                </Typography> :
+                <DeleteForeverIcon onClick={handleClick} className={styles.deleteForm__icon} />
+            }
+            <ChildModal
+                open={openChildModal}
+                handleClose={handleClose}
+                handleSubmit={handleSubmit}
+                title={'avatar'}
             />
         </>
     )

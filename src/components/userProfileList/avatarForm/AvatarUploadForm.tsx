@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm, FieldValues } from "react-hook-form";
 import { toast } from 'react-toastify';
 
-import { Avatar, Box, Tooltip, IconButton } from '@mui/material';
+import { Avatar, Box, Tooltip, IconButton, Typography } from '@mui/material';
 import CloseIcon from "@mui/icons-material/Close";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 
@@ -11,6 +11,8 @@ import AvatarDeleteForm from './AvatarDeleteForm';
 import { useFetchUploadAvatarMutation } from "services/userServices";
 
 import { IUser } from 'types/userTypes';
+
+import styles from './avatarForm.module.scss';
 
 const checkFileType = (type: string): boolean => {
     return (type === 'image/jpeg' || type === 'image/png' || type === 'image/webp');
@@ -66,12 +68,12 @@ const AvatarUploadForm: React.FC<{ user?: IUser }> = ({ user }) => {
             noValidate
             autoComplete="off"
             onSubmit={handleSubmit(onSubmit)}
-            sx={{textAlign: 'center'}}
+            className={styles.avatarForm}
         >
-            <Box sx={{ cursor: 'pointer' }} component="label" onChange={onChange}>
+            <Box component="label" onChange={onChange}>
                 <Tooltip title="Change Avatar" placement="left" arrow>
                     <Avatar
-                        sx={{ width: 150, height: 150, margin: '0 auto' }}
+                        className={styles.avatarForm__avatar}
                         src={userAvatarURL}
                     />
                 </Tooltip>
@@ -82,23 +84,27 @@ const AvatarUploadForm: React.FC<{ user?: IUser }> = ({ user }) => {
                     hidden
                 />
             </Box>
-            {isLoading ? 'Loading...' : fileName ? (
-                <>
-                    {fileName}
-                    <IconButton onClick={onReset}>
-                        <Tooltip title="Cancel" placement="top" arrow>
-                            <CloseIcon />
-                        </Tooltip>
-                    </IconButton>
-                    <IconButton type="submit">
-                        <Tooltip title="Upload" placement="top" arrow>
-                            <FileUploadIcon color='primary' />
-                        </Tooltip>
-                    </IconButton>
-                </>
-            ) : <AvatarDeleteForm user={user} />}
+            {isLoading ?
+                <Typography className={styles.avatarForm__loading}>
+                    Loading...
+                </Typography>
+                : fileName ? (
+                    <>
+                        {fileName}
+                        <IconButton onClick={onReset}>
+                            <Tooltip title="Cancel" placement="top" arrow>
+                                <CloseIcon />
+                            </Tooltip>
+                        </IconButton>
+                        <IconButton type="submit">
+                            <Tooltip title="Upload" placement="top" arrow>
+                                <FileUploadIcon color='primary' />
+                            </Tooltip>
+                        </IconButton>
+                    </>
+                ) : <AvatarDeleteForm avatarURL={user?.avatarURL} />}
         </Box>
     )
 }
 
-export default AvatarUploadForm
+export default AvatarUploadForm;

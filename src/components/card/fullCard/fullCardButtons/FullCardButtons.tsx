@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 
 import { Button } from "@mui/material";
+
+import ChildModal from "components/childModal/ChildModal";
 
 import { ICompleteTask, ITask } from "types/taskTypes";
 import { useFetchDeleteTaskMutation, useFetchUpdateTaskMutation } from "services/taskServices";
@@ -15,21 +17,15 @@ interface IFullCardButtons {
 const FullCardButtons: React.FC<IFullCardButtons> = ({ task, closeModal }) => {
     const { _id, completed } = task;
 
+    const [openChildModal, setOpenChildModal] = useState(false);
+
     const [updateTask, { isLoading }] = useFetchUpdateTaskMutation();
     const [deleteTask] = useFetchDeleteTaskMutation();
 
     const navigate = useNavigate();
 
     const handleDelete = async (_id: string) => {
-        closeModal();
-        await deleteTask({ _id })
-            .unwrap()
-            .then((res) => {
-                toast.success(res.message)
-            })
-            .catch((error: { data: { message: string } }) => {
-                toast.error(error.data.message);
-            })
+        setOpenChildModal(true);
     };
 
     const handleUpdate = (task: ITask): void => {
@@ -45,6 +41,22 @@ const FullCardButtons: React.FC<IFullCardButtons> = ({ task, closeModal }) => {
         await updateTask(newData)
             .unwrap()
             .then(res => {
+                toast.success(res.message)
+            })
+            .catch((error: { data: { message: string } }) => {
+                toast.error(error.data.message);
+            })
+    };
+
+    const handleClose = (): void => {
+        setOpenChildModal(false);
+    };
+    const handleSubmit = async () => {
+        setOpenChildModal(false);
+        await deleteTask({ _id })
+            .unwrap()
+            .then((res) => {
+                closeModal();
                 toast.success(res.message)
             })
             .catch((error: { data: { message: string } }) => {
@@ -75,6 +87,12 @@ const FullCardButtons: React.FC<IFullCardButtons> = ({ task, closeModal }) => {
                         ? "Undo Complete"
                         : "Complete"}
             </Button>
+            <ChildModal
+                open={openChildModal}
+                handleClose={handleClose}
+                handleSubmit={handleSubmit}
+                title={'task'}
+            />
         </>
     );
 };
