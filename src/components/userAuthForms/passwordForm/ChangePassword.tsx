@@ -46,33 +46,31 @@ const ChangePassword: React.FC = () => {
     };
 
     return (
-        <>
-            <Box
-                className={styles.form__field}
-                component="form"
-                noValidate
-                autoComplete="off"
-                onSubmit={handleSubmit(onSubmit)}
+        <Box
+            className={styles.form__field}
+            component="form"
+            noValidate
+            autoComplete="off"
+            onSubmit={handleSubmit(onSubmit)}
+        >
+            <PasswordField
+                name={"New password"}
+                error={errors.newpassword}
+                control={control}
+            />
+            <PasswordField
+                name={"Confirm password"}
+                error={errors.confirmpassword}
+                control={control}
+            />
+            <Button
+                disabled={!isValid}
+                className={styles.form__submit_button}
+                type="submit"
             >
-                <PasswordField
-                    name={"New password"}
-                    error={errors.newpassword}
-                    control={control}
-                />
-                <PasswordField
-                    name={"Confirm password"}
-                    error={errors.confirmpassword}
-                    control={control}
-                />
-                <Button
-                    disabled={!isValid}
-                    className={styles.form__submit_button}
-                    type="submit"
-                >
-                    {isLoading ? 'Loading...' : "Change password"}
-                </Button>
-            </Box>
-        </>
+                {isLoading ? 'Loading...' : "Change password"}
+            </Button>
+        </Box>
     );
 }
 

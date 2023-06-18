@@ -11,6 +11,8 @@ import Page404 from "pages/Page404";
 import ChangePasswordPage from "pages/ChangePasswordPage";
 import UpdateTaskPage from "pages/UpdateTaskPage";
 import AddTaskPage from "pages/AddTaskPage";
+import ResetPasswordPage from "pages/ResetPasswordPage";
+import SetNewPasswordPage from "pages/SetNewPasswordPage";
 
 
 export const router = createBrowserRouter(
@@ -23,6 +25,8 @@ export const router = createBrowserRouter(
             <Route path="password" element={<RequireAuth children={<ChangePasswordPage />} />} />
             <Route path="registration" element={<RegistrationPage />} />
             <Route path="login" element={<LoginPage />} />
+            <Route path="reset" element={<ResetPasswordPage />} />
+            <Route path="auth/reset/:token" element={<SetNewPasswordPage />} />
             <Route path="*" element={<Page404 />} />
         </Route>
     )

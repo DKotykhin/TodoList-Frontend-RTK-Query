@@ -21,6 +21,7 @@ Full stack application
 -   User upload/delete avatar
 -   Validation all fields
 -   CRUD tasks
+-   Restore password via email
 -   Short/Full card
 -   Quick complete
 -   Markdown for description field

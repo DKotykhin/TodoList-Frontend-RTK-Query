@@ -54,6 +54,8 @@ const LoginForm: React.FC = () => {
             })
     };
 
+    const forgotClick = () => navigate('/reset');
+
     return (
         <Container maxWidth="xs" className={styles.form}>
             <Paper elevation={10} className={styles.form__paper}>
@@ -75,6 +77,12 @@ const LoginForm: React.FC = () => {
                         error={errors.password}
                         control={control}
                     />
+                    <Typography
+                        className={styles.form__forgot}
+                        onClick={forgotClick}
+                    >
+                        Forgot your password?
+                    </Typography>
                     <InputLabel className={styles.form__checkbox}>
                         <Controller
                             name="rememberMe"

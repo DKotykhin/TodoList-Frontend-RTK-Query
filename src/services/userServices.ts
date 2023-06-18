@@ -2,7 +2,12 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { getToken } from "./getToken";
 import { setUserAvatar } from "store/userSlice";
-import { IUserLogin, IUserRegister, IUserUpdateName, IUserUpdatePassword } from "types/userTypes";
+import {
+    IUserLogin,
+    IUserRegister,
+    IUserUpdateName,
+    IUserUpdatePassword,
+} from "types/userTypes";
 import {
     IUserAvatarResponse,
     IUserConfirmPasswordResponse,
@@ -11,6 +16,7 @@ import {
     IUserResponse,
     IUserWithTokenResponse,
     ITaskStatisticResponse,
+    IUserResetPasswordResponse,
 } from "types/responseTypes";
 
 const Base_URL = process.env.REACT_APP_BACKEND_URL;
@@ -20,7 +26,6 @@ export const fetchUser = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: Base_URL }),
     tagTypes: ["User"],
     endpoints: (builder) => ({
-
         fetchUserByToken: builder.query<IUserResponse, void>({
             query: () => ({
                 url: "/user/me",
@@ -35,7 +40,10 @@ export const fetchUser = createApi({
             providesTags: ["User"],
         }),
 
-        fetchRegisterUser: builder.mutation<IUserWithTokenResponse, IUserRegister>({
+        fetchRegisterUser: builder.mutation<
+            IUserWithTokenResponse,
+            IUserRegister
+        >({
             query: (data) => ({
                 url: "/auth/register",
                 method: "POST",
@@ -72,7 +80,10 @@ export const fetchUser = createApi({
             invalidatesTags: ["User"],
         }),
 
-        fetchUpdateUserPassword: builder.mutation<IUserUpdatePasswordResponse, IUserUpdatePassword>({
+        fetchUpdateUserPassword: builder.mutation<
+            IUserUpdatePasswordResponse,
+            IUserUpdatePassword
+        >({
             query: (data) => ({
                 method: "PATCH",
                 url: "/user/password",
@@ -83,16 +94,6 @@ export const fetchUser = createApi({
                 body: JSON.stringify(data),
             }),
             invalidatesTags: ["User"],
-        }),
-
-        fetchDeleteUser: builder.mutation<IUserDeleteResponse, void>({
-            query: () => ({
-                method: "DELETE",
-                url: "/user/me",
-                headers: {
-                    Authorization: `Bearer ${getToken()}`,
-                },
-            }),
         }),
 
         fetchUserConfirmPassword: builder.mutation<
@@ -107,6 +108,44 @@ export const fetchUser = createApi({
                     Authorization: `Bearer ${getToken()}`,
                 },
                 body: JSON.stringify(data),
+            }),
+        }),
+
+        fetchUserResetPassword: builder.mutation<
+            IUserResetPasswordResponse,
+            { email: string }
+        >({
+            query: (data) => ({
+                method: "POST",
+                url: "/mail/reset",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            }),
+        }),
+
+        fetchUserSetNewPassword: builder.mutation<
+            IUserUpdatePasswordResponse,
+            { password: string; token: string | undefined }
+        >({
+            query: (data) => ({
+                method: "PATCH",
+                url: "/mail/reset",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            }),
+        }),
+
+        fetchDeleteUser: builder.mutation<IUserDeleteResponse, void>({
+            query: () => ({
+                method: "DELETE",
+                url: "/user/me",
+                headers: {
+                    Authorization: `Bearer ${getToken()}`,
+                },
             }),
         }),
 
@@ -140,7 +179,7 @@ export const fetchUser = createApi({
                 headers: {
                     Authorization: `Bearer ${getToken()}`,
                 },
-            }),            
+            }),
         }),
     }),
 });
@@ -150,6 +189,8 @@ export const {
     useFetchLoginUserMutation,
     useFetchUpdateUserNameMutation,
     useFetchUpdateUserPasswordMutation,
+    useFetchUserResetPasswordMutation,
+    useFetchUserSetNewPasswordMutation,
     useFetchDeleteAvatarMutation,
     useFetchDeleteUserMutation,
     useFetchRegisterUserMutation,
