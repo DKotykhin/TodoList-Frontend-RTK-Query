@@ -26,11 +26,11 @@ export interface IUserResetPasswordResponse {
 
 export interface IUserDeleteResponse {
     userStatus: {
-        acknowledged: boolean; 
+        acknowledged: boolean;
         deletedCount: number;
-    }
+    };
     taskStatus: {
-        acknowledged: boolean; 
+        acknowledged: boolean;
         deletedCount: number;
     };
     message: string;
@@ -49,7 +49,8 @@ export interface IGetTasksResponse {
     message: string;
 }
 
-export interface ITaskResponse extends ITask {
+export interface ITaskResponse {
+    task: ITask;
     message: string;
 }
 

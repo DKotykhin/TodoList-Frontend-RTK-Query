@@ -9,7 +9,7 @@ Full stack application
 
 ## Technologies
 
--   Backend: Node JS, Express JS, Mongoose, Multer, Yup, JWT
+-   Backend: Node JS, Nest JS, Mongoose, Multer, Yup, JWT, Bcrypt, Nodemailer
 -   Frontend: React, Redux Toolkit, RTK Query, Typescript, React Hook Form, MUI, Markdown, Tostify, SCSS
 -   Database: Mongo DB
 
