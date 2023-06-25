@@ -9,8 +9,8 @@ Full stack application
 
 ## Technologies
 
--   Backend: Node JS, Nest JS, Mongoose, Multer, Yup, JWT, Bcrypt, Nodemailer
--   Frontend: React, Redux Toolkit, RTK Query, Typescript, React Hook Form, MUI, Markdown, Tostify, SCSS
+-   Backend: Node JS, Nest JS, Typescript, Mongoose, JWT, Bcrypt, Nodemailer, Class Validator, Handlebars, Sharp, Swagger
+-   Frontend: React, Redux Toolkit, RTK Query, Typescript, React Hook Form, Material UI, React Markdown, React Tostify, Date-fns, Yup, SCSS
 -   Database: Mongo DB
 
 ## Features
@@ -18,18 +18,19 @@ Full stack application
 -   User login/logout, delete and registration
 -   Authification by token
 -   User update name and password
--   User upload/delete avatar
+-   User upload/delete avatar image
 -   Validation all fields
 -   CRUD tasks
 -   Restore password via email
 -   Short/Full card
--   Quick complete
+-   Quick task complete
 -   Markdown for description field
 -   Tabs: All, Active, Done
 -   Sort by created, deadline, title from DB
 -   Search by title from DB
 -   Color deadline notification
 -   Toast success/Error notification
+-   Task statistic
 -   Pagination
 -   Mobile friendly
 
