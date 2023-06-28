@@ -9,7 +9,7 @@ import { Container, Typography, InputLabel, Checkbox } from "@mui/material";
 import { Box } from "@mui/system";
 
 import { UpdateTaskFormValidation } from "../validations/taskFormValidation";
-import { TitleField, MDEField, SubtitleField, DeadlineField } from "../fields/taskFields";
+import { TitleField, MDEField, SubtitleField, DeadlineField } from "../fields/taskFields/_index";
 import Buttons from "./buttons/Buttons";
 
 import { useFetchUpdateTaskMutation, useFetchAllTasksQuery } from "services/taskServices";
@@ -64,12 +64,12 @@ const UpdateTaskComponent: React.FC = () => {
         await updateTask(totalData)
             .unwrap()
             .then((data) => {
-                toast.success(data.message)
-                navigate("/", { replace: true })
+                toast.success(data.message);
+                navigate("/", { replace: true });
             })
             .catch((error: { data: { message: string } }) => {
                 toast.error(error.data.message);
-            })
+            });
     };
 
     const MDEChange = useCallback((data: string) => {

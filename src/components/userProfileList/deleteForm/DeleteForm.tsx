@@ -38,7 +38,7 @@ const DeleteForm: React.FC = () => {
             })
             .catch((error) => {
                 toast.error(error.data.message);
-            })
+            });
     };
 
     const handleClick = (): void => {
@@ -61,7 +61,7 @@ const DeleteForm: React.FC = () => {
                 title={'user'}
             />
         </Paper>
-    )
-}
+    );
+};
 
 export default DeleteForm;

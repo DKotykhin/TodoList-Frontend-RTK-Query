@@ -26,7 +26,7 @@ const AvatarDeleteForm: React.FC<{ avatarURL?: string }> = ({ avatarURL }) => {
                 })
                 .catch((error) => {
                     toast.error(error.data.message);
-                })
+                });
         } else {
             toast.warn("Avatar doesn't exist");
         }
@@ -54,7 +54,7 @@ const AvatarDeleteForm: React.FC<{ avatarURL?: string }> = ({ avatarURL }) => {
                 title={'avatar'}
             />
         </>
-    )
-}
+    );
+};
 
 export default AvatarDeleteForm;

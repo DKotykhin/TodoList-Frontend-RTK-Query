@@ -70,7 +70,7 @@ const UserStatistic: React.FC = () => {
                 </>
             }
         </Paper>
-    )
-}
+    );
+};
 
 export default UserStatistic;

@@ -42,4 +42,4 @@ const EmailField: React.FC<IEmailField> = ({ disabled, error, control }) => {
     );
 };
 
-export default EmailField;
+export { EmailField };

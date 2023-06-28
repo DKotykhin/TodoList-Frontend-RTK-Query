@@ -65,7 +65,7 @@ const HomePageList: React.FC = () => {
         const delayDebounceFn = setTimeout(() => {
             setSearchQuery(searchTerm);
         }, 300);
-        return () => clearTimeout(delayDebounceFn)
+        return () => clearTimeout(delayDebounceFn);
     }, [searchTerm]);
 
     useEffect(() => {

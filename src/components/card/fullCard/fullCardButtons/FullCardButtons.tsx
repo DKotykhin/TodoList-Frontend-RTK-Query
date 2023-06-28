@@ -41,11 +41,11 @@ const FullCardButtons: React.FC<IFullCardButtons> = ({ task, closeModal }) => {
         await updateTask(newData)
             .unwrap()
             .then(res => {
-                toast.success(res.message)
+                toast.success(res.message);
             })
             .catch((error: { data: { message: string } }) => {
                 toast.error(error.data.message);
-            })
+            });
     };
 
     const handleClose = (): void => {
@@ -57,11 +57,11 @@ const FullCardButtons: React.FC<IFullCardButtons> = ({ task, closeModal }) => {
             .unwrap()
             .then((res) => {
                 closeModal();
-                toast.success(res.message)
+                toast.success(res.message);
             })
             .catch((error: { data: { message: string } }) => {
                 toast.error(error.data.message);
-            })
+            });
     };
 
     return (

@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { Box } from "@mui/system";
 import { Container, Typography } from "@mui/material";
 
-import { TitleField, MDEField, SubtitleField, DeadlineField } from "../fields/taskFields";
+import { TitleField, MDEField, SubtitleField, DeadlineField } from "../fields/taskFields/_index";
 import { AddTaskFormValidation } from "../validations/taskFormValidation";
 import Buttons from "./buttons/Buttons";
 
@@ -41,12 +41,12 @@ const AddTaskComponent: React.FC = () => {
         await addTask(newData)
             .unwrap()
             .then((data) => {
-                toast.success(data.message)
-                navigate("/", { replace: true })
+                toast.success(data.message);
+                navigate("/", { replace: true });
             })
             .catch((error: { data: { message: string } }) => {
                 toast.error(error.data.message);
-            })
+            });
     };
 
     const MDEChange = useCallback((data: string) => {

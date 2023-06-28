@@ -6,7 +6,7 @@ import { Button, Paper } from "@mui/material";
 import { Box } from "@mui/system";
 
 import { ProfileFormValidation } from "components/validations/userFormValidation";
-import { EmailField, NameField } from "components/fields/userFields";
+import { EmailField, NameField } from "components/fields/userFields/_index";
 import AvatarUploadForm from "../avatarForm/AvatarUploadForm";
 
 import { useFetchUpdateUserNameMutation } from "services/userServices";
@@ -41,7 +41,7 @@ const ProfileForm: React.FC<{ user?: IUser }> = ({ user }) => {
                 })
                 .catch((error) => {
                     toast.error(error.data.message);
-                })
+                });
 
         } else toast.warn('The same name!');
     };
@@ -70,7 +70,7 @@ const ProfileForm: React.FC<{ user?: IUser }> = ({ user }) => {
                 </Button>
             </Box>
         </Paper>
-    )
-}
+    );
+};
 
 export default ProfileForm;

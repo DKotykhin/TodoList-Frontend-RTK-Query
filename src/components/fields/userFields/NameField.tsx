@@ -34,10 +34,10 @@ const NameField: React.FC<INameField> = ({ label, error, control }) => {
                         />
                     )}
                 />
-            <FormHelperText>{error?.message}</FormHelperText>
+                <FormHelperText>{error?.message}</FormHelperText>
             </FormControl>
         </Box>
     );
 };
 
-export default NameField;
+export { NameField };

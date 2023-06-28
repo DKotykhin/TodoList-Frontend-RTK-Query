@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 import { Button, Container, Typography, Box, Avatar, Paper } from "@mui/material";
 
-import { PasswordField } from "components/fields/userFields";
+import { PasswordField } from "components/fields/userFields/_index";
 import { NewPasswordFormValidation } from "components/validations/userFormValidation";
 
 import { useFetchUserSetNewPasswordMutation } from 'services/userServices';
@@ -43,7 +43,7 @@ const SetNewPasswordForm: React.FC = () => {
                     toast.success(response.message);
                     reset();
                 })
-                .catch(error => toast.error(error.data.message))
+                .catch(error => toast.error(error.data.message));
         } else {
             toast.warn("Passwords don't match");
         }
@@ -80,7 +80,7 @@ const SetNewPasswordForm: React.FC = () => {
                 </Box>
             </Paper>
         </Container>
-    )
-}
+    );
+};
 
 export default SetNewPasswordForm;

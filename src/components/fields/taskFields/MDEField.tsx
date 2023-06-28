@@ -32,7 +32,7 @@ const MDEField: React.FC<IMDEField> = ({ description, MDEChange, autofocus }) =>
         <Paper>
             <SimpleMDE value={description} onChange={MDEChange} options={options} />
         </Paper>
-    )
+    );
 };
 
-export default MDEField;
+export { MDEField };

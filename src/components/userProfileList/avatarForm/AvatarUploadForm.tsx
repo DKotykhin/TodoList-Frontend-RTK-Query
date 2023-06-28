@@ -56,11 +56,11 @@ const AvatarUploadForm: React.FC<{ user?: IUser }> = ({ user }) => {
                 })
                 .catch((error) => {
                     toast.error(error.data.message);
-                })
+                });
         } else {
             toast.warn("No File in Avatar Field");
         }
-    }
+    };
 
     return (
         <Box
@@ -104,7 +104,7 @@ const AvatarUploadForm: React.FC<{ user?: IUser }> = ({ user }) => {
                     </>
                 ) : <AvatarDeleteForm avatarURL={user?.avatarURL} />}
         </Box>
-    )
-}
+    );
+};
 
 export default AvatarUploadForm;

@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { Button, Container, Typography, Avatar, Paper } from "@mui/material";
 import { Box } from "@mui/system";
 
-import { EmailField, NameField, PasswordField } from "components/fields/userFields";
+import { EmailField, NameField, PasswordField } from "components/fields/userFields/_index";
 import { RegisterFormValidation } from "../validations/userFormValidation";
 import { useFetchRegisterUserMutation } from "services/userServices";
 
@@ -43,7 +43,7 @@ const RegisterForm = () => {
             })
             .catch((error) => {
                 toast.error(error.data.message);
-            })
+            });
     };
 
     return (
@@ -88,6 +88,6 @@ const RegisterForm = () => {
             </Button>
         </Container>
     );
-}
+};
 
 export default RegisterForm;

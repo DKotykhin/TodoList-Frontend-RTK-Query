@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { Button } from "@mui/material";
 import { Box } from "@mui/system";
 
-import { PasswordField } from "components/fields/userFields";
+import { PasswordField } from "components/fields/userFields/_index";
 import { PasswordFormValidation } from "../../validations/userFormValidation";
 import { useFetchUserConfirmPasswordMutation } from "services/userServices";
 
@@ -21,7 +21,7 @@ interface IPasswordData {
 
 const ConfirmPassword: React.FC<IConfirmPassword> = ({ confirmStatus }) => {
 
-    const [confirmPassword, { isLoading }] = useFetchUserConfirmPasswordMutation()
+    const [confirmPassword, { isLoading }] = useFetchUserConfirmPasswordMutation();
 
     const {
         control,
@@ -36,15 +36,15 @@ const ConfirmPassword: React.FC<IConfirmPassword> = ({ confirmStatus }) => {
             .then(response => {
                 console.log(response.message);
                 if (response.confirmStatus) {
-                    confirmStatus(response.confirmStatus)
+                    confirmStatus(response.confirmStatus);
                 } else {
                     toast.error(response.message);
                 }
             })
             .catch((error: { data: { message: string }}) => {                
                 toast.error(error.data.message);
-            })
-    }
+            });
+    };
 
     return (
         <>
@@ -69,7 +69,7 @@ const ConfirmPassword: React.FC<IConfirmPassword> = ({ confirmStatus }) => {
                 </Button>
             </Box>            
         </>
-    )
-}
+    );
+};
 
 export default ConfirmPassword;

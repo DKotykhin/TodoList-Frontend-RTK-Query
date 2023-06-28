@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { Button, Container, Typography, Box, Avatar, Paper } from "@mui/material";
 import { InputLabel, Checkbox } from "@mui/material";
 
-import { EmailField, PasswordField } from "components/fields/userFields";
+import { EmailField, PasswordField } from "components/fields/userFields/_index";
 import { LoginFormValidation } from "../validations/userFormValidation";
 
 import { IUserLogin } from "types/userTypes";
@@ -51,7 +51,7 @@ const LoginForm: React.FC = () => {
             })
             .catch((error) => {
                 toast.error(error.data.message);
-            })
+            });
     };
 
     const forgotClick = () => navigate('/reset');
