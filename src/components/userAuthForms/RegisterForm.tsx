@@ -6,7 +6,7 @@ import { Button, Container, Typography, Avatar, Paper } from "@mui/material";
 import { Box } from "@mui/system";
 
 import { EmailField, NameField, PasswordField } from "components/fields/userFields/_index";
-import { RegisterFormValidation } from "../validations/userFormValidation";
+import { RegisterFormValidation } from "validations/userFormValidation";
 import { useFetchRegisterUserMutation } from "services/userServices";
 
 import { IUserRegister } from "types/userTypes";

@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
-import { FieldValues, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { toast } from 'react-toastify';
 
 import { Button, Paper } from "@mui/material";
 import { Box } from "@mui/system";
 
-import { ProfileFormValidation } from "components/validations/userFormValidation";
+import { ProfileFormValidation } from "validations/userFormValidation";
 import { EmailField, NameField } from "components/fields/userFields/_index";
 import AvatarUploadForm from "../avatarForm/AvatarUploadForm";
 
 import { useFetchUpdateUserNameMutation } from "services/userServices";
 
-import { IUser } from "types/userTypes";
+import { IUser, IUserProfileForm } from "types/userTypes";
 
 import styles from "./profileForm.module.scss";
 
@@ -24,13 +24,13 @@ const ProfileForm: React.FC<{ user?: IUser }> = ({ user }) => {
         reset,
         handleSubmit,
         formState: { errors },
-    } = useForm(ProfileFormValidation);
+    } = useForm<IUserProfileForm>(ProfileFormValidation);
 
     useEffect(() => {
         reset({ name: user?.name, email: user?.email });
     }, [reset, user?.name, user?.email]);
 
-    const onSubmit = async (updateData: FieldValues) => {
+    const onSubmit = async (updateData: IUserProfileForm) => {
         const { name } = updateData;
         const validName = name.trim();
         if (validName !== user?.name) {

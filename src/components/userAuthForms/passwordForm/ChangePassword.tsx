@@ -6,7 +6,7 @@ import { Button } from "@mui/material";
 import { Box } from "@mui/system";
 
 import { PasswordField } from "components/fields/userFields/_index";
-import { NewPasswordFormValidation } from "../../validations/userFormValidation";
+import { NewPasswordFormValidation } from "validations/userFormValidation";
 import { useFetchUpdateUserPasswordMutation } from "services/userServices";
 
 import styles from "./password.module.scss";

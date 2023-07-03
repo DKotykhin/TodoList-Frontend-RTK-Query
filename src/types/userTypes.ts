@@ -1,25 +1,29 @@
-export interface IUserLogin {    
+export interface IUserLogin {
     email: string;
-    password: string;    
+    password: string;
 }
 
 export interface IUserRegister extends IUserLogin {
-    name: string    
+    name: string;
 }
 
 export interface IUserUpdateName {
-    name: string;    
+    name: string;
 }
 
 export interface IUserUpdatePassword {
     password: string;
 }
 
-export interface IUser {    
+export interface IUser {
     _id: string;
     email: string;
     name: string;
-    createdAt: string; 
-    avatarURL: string;    
+    createdAt: string;
+    avatarURL: string;
 }
 
+export interface IUserProfileForm {
+    email: string;
+    name: string;
+}
